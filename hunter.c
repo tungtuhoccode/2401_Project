@@ -74,6 +74,14 @@ void createNewHunters(HunterType **hunters){
 }
 
 
+void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource){
+    for(int i = 0;i< NUM_HUNTERS;i++){
+        houseDestination->huntersInHouse[i] = huntersSource[i];
+        RoomType *firstRoom = houseDestination->rooms.head->data;
+        firstRoom->huntersInRoom[i] = huntersSource[i];
+        firstRoom->countHunter++;
+    }
+}
 
 void freeHunterList(HunterType **hunters){
     for(int i = 0;i < NUM_HUNTERS;i++){
@@ -97,6 +105,3 @@ void initHuntersArray(HunterType** hunters){
 
 
 
-void move(){
-
-}

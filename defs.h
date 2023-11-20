@@ -121,6 +121,7 @@ struct Room {
    RoomListType connectedRooms;
    EvidenceListType roomEvList;
    HunterType* huntersInRoom[NUM_HUNTERS];
+   int countHunter;
    sem_t room_mutex;
 };
 
@@ -184,6 +185,10 @@ void initHuntersArray(HunterType** hunters);
 void createNewHunters(HunterType **hunters);
 void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType);
 void freeHunterList(HunterType **hunters);
+void printHuntersInRoom(RoomType *room);
+
+int addHunterToRoom(RoomType *room, HunterType *hunter);
+int removeHunterFromRoom(RoomType *room, HunterType *hunter);
 
 
 //house 
@@ -193,14 +198,16 @@ void initHouse(HouseType **house);
 void printHuntersInHouse(HouseType *house);
 void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource);
 void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource);
-
 void placeGhostInRandomRoom(GhostType *ghost, HouseType *house);
 
 //ghost 
 void initGhost(GhostType **ghost);
 void initGhostEvidenceTypeArray(GhostType *ghost);
 void freeGhost(GhostType *ghost);
+
 //main function
+void* runGhostSimulationThread(void *arg);
+void* runHunterSimulationThread(void* arg);
 
 //helper in main
 int getRandomInRange(int max);

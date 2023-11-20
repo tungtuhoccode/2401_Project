@@ -43,6 +43,28 @@ void initGhostEvidenceTypeArray(GhostType *ghost){
             break;
     }
 }
+void placeGhostInRandomRoom(GhostType *ghost, HouseType *house){
+    while(C_TRUE){
+        int ghostAdded = C_FALSE;
+
+        RoomNodeType *currNode = house->rooms.head;
+        while(currNode != NULL){
+            RoomType *currRoom = currNode->data;
+            //add ghost to a room randomly
+            int rand = getRandomInRange(2);
+            if(rand == 0){
+                ghost->inRoom = currRoom;
+                ghostAdded = C_TRUE;
+                break;
+            }
+            currNode = currNode->next;
+        }
+
+        //if ghost is succesfully added
+        if(ghostAdded) break;
+    }
+}
+
 
 void freeGhost(GhostType *ghost){
     free(ghost);

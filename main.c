@@ -25,16 +25,28 @@ int main()
     placeGhostInRandomRoom(ghost, house);
     l_ghostInit(ghost->ghostClass, ghost->inRoom->roomName);
 
-    //Thread creation
-    pthread_t ghostThread, hunterThread1, hunterThread2, hunterThread3, hunterThread4;
-
-
-
-
-
-
     placeHuntersInFirstRoom(house, hunters);
     printHuntersInHouse(house);
+
+    addHunterToRoom(house->rooms.head->next->data, house->huntersInHouse[0]);
+    addHunterToRoom(house->rooms.head->next->data, house->huntersInHouse[1]);
+    printHuntersInRoom(house->rooms.head->next->data);
+
+
+    //Thread creation
+    pthread_t ghostThread, hunterThread[NUM_HUNTERS];
+
+    pthread_create(&ghostThread, NULL, runGhostSimulationThread, ghost);
+    for (int i =0;i<NUM_HUNTERS;i++){
+        pthread_create(&hunterThread[i], NULL, runHunterSimulationThread, hunters[i]);
+    }
+
+
+    pthread_join(ghostThread, NULL);
+    for (int i =0;i<NUM_HUNTERS;i++){
+        pthread_join(hunterThread[i], NULL);
+    }
+
 
 
     // RoomNodeType *currNode = house->rooms.head;
@@ -52,6 +64,17 @@ int main()
     freeHouse(house);
 
     return 0;
+}
+
+void* runGhostSimulationThread(void* arg){   
+    printf("Ghost thread is running\n");
+    printf("Ghost thread is running2");
+
+}
+
+void* runHunterSimulationThread(void* arg){   
+    printf("Hunter thread is running\n");
+    printf("Hunter thread is running after sleep\n");
 }
 
 //get random number in range (0,max-1)

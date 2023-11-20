@@ -21,6 +21,8 @@ RoomType* createRoom(char* roomNameIn){
     //hunter array
     initHuntersArray(newRoom->huntersInRoom);
 
+    //initilize semaphore
+
     return newRoom;
 }
 
@@ -87,4 +89,41 @@ void addRoom(RoomListType *list, RoomType *room){
         list->tail->next = newNode;
         list->tail = list->tail->next;
     }
+}
+
+void printHuntersInRoom(RoomType *room){
+    printf("\nALl hunters in room (%s) are: \n", room->roomName);
+    for(int i = 0;i< room->countHunter;i++){
+        printf("Hunter %d: %s\n",(i+1),room->huntersInRoom[i]->hunterName);
+    }
+    printf("---------------------------\n");
+}
+
+//** MULTITHREAD FUNCTION **//
+int addHunterToRoom(RoomType *room, HunterType *hunter){
+    //remember to lock and unlock  
+
+    int curNumbHunter = room->countHunter;
+    if(curNumbHunter == NUM_HUNTERS){
+        printf("Four hunters are in room, cannot add more\n");
+        return C_FALSE;
+    }
+    room->huntersInRoom[curNumbHunter] = hunter;
+    room->countHunter++;
+
+    return C_TRUE;
+}
+
+int removeHunterFromRoom(RoomType *room, HunterType *hunter){
+    //remember to lock and unlock
+    int curNumbHunter = room->countHunter;
+    for(int i=0;i<curNumbHunter;i++){
+        if(strcmp(hunter->hunterName, room->huntersInRoom[i]->hunterName)){
+            room->huntersInRoom[i] = NULL;
+        }
+        for(int j=i;j<curNumbHunter-1;j--){
+
+        }
+    }
+    
 }
