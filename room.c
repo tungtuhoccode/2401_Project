@@ -65,7 +65,6 @@ void printRoomList(RoomListType *list){
 
 void printRoom(RoomType *room){
     printf("room name: %s\n", room->roomName);
-
 }
 
 //free

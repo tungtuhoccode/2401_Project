@@ -87,3 +87,11 @@ void ghostToString(enum GhostClass ghost, char* buffer) {
         
     }
 }
+
+
+
+
+void clearBuffer(){
+  char c;
+  while((c = getchar()) != '\n');
+}

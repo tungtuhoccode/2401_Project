@@ -1,6 +1,6 @@
 #include "defs.h"
 
-void getHunterName(HunterType **hunters){
+void createNewHunters(HunterType **hunters){
     int equipments[NUM_HUNTERS] = {EMF, TEMPERATURE, FINGERPRINTS, SOUND};
     int i;
     
@@ -57,10 +57,7 @@ void getHunterName(HunterType **hunters){
     }
 }
 
-void clearBuffer(){
-  char c;
-  while((c = getchar()) != '\n');
-}
+
 
 void freeHunterList(HunterType **hunters){
     for(int i = 0;i < NUM_HUNTERS;i++){
@@ -80,4 +77,10 @@ void initHuntersArray(HunterType** hunters){
     for(int i = 0;i<NUM_HUNTERS;i++){
         hunters[i] = NULL;
     }
+}
+
+
+
+void move(){
+
 }

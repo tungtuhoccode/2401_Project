@@ -55,12 +55,56 @@ void populateRooms(HouseType* house) {
     addRoom(&house->rooms, garage);
     addRoom(&house->rooms, utility_room);
 
-    printRoomList(&house->rooms);
     printf("finish populating room\n");
+}
+
+void initHouse(HouseType **house){
+    HouseType *newHouse = (HouseType*) calloc(1, sizeof(HouseType));
+    //hunters
+    for(int i=0;i<NUM_HUNTERS;i++){
+        newHouse->huntersInHouse[i] = NULL;
+    }   
+    //
+    initRoomList(&newHouse->rooms);
+    initEvidenceList(&newHouse->sharedEvList);
+
+    //deference param house and set it to the new house
+    (*house) = newHouse;
+}
+
+void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource){
+    for(int i = 0;i< NUM_HUNTERS;i++){
+        houseDestination->huntersInHouse[i] = huntersSource[i];
+        RoomType *firstRoom = houseDestination->rooms.head->data;
+        firstRoom->huntersInRoom[i] = huntersSource[i];
+    }
+}
+
+void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource){
+    for(int i = 0;i< NUM_HUNTERS;i++){
+        houseDestination->huntersInHouse[i] = huntersSource[i];
+        RoomType *firstRoom = houseDestination->rooms.head->data;
+        firstRoom->huntersInRoom[i] = huntersSource[i];
+    }
 }
 
 void freeHouse(HouseType *house){
     freeRoom(&house->rooms);
     freeRoomList(&house->rooms);
     free(house);
+}
+
+void printHuntersInHouse(HouseType *house){
+    printf("\nALl hunters in house are: \n");
+    for(int i = 0;i< NUM_HUNTERS;i++){
+        printf("Hunter %d: %s\n",(i+1),house->huntersInHouse[i]->hunterName);
+    }
+    printf("---------------------------\n");
+
+    RoomType *firstRoom = house->rooms.head->data;
+    printf("\nALl hunters in first room (%s) are: \n", firstRoom->roomName);
+    for(int i = 0;i< NUM_HUNTERS;i++){
+        printf("Hunter %d: %s\n",(i+1),firstRoom->huntersInRoom[i]->hunterName);
+    }
+    printf("---------------------------\n");
 }

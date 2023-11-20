@@ -135,11 +135,7 @@ struct Ghost {
 
 //House
 struct House {
-    //hunter collections
-    //linkedlist all rooms
-    //llist evidencelist
-
-    HunterType huntersInHouse[NUM_HUNTERS];
+    HunterType *huntersInHouse[NUM_HUNTERS];
     RoomListType rooms; 
     EvidenceListType sharedEvList; 
 };
@@ -182,14 +178,20 @@ void printRoomList(RoomListType *list);
 
 void freeRoom(RoomListType *list);
 void freeRoomList(RoomListType *list);
+
 //hunter
 void initHuntersArray(HunterType** hunters);
-void getHunterName(HunterType **hunters);
+void createNewHunters(HunterType **hunters);
 void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType);
 void freeHunterList(HunterType **hunters);
+
 
 //house 
 void populateRooms(HouseType* house);
 void freeHouse(HouseType *house);
+void initHouse(HouseType **house);
+void printHuntersInHouse(HouseType *house);
+void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource);
+void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource);
 
 //main function 
