@@ -16,9 +16,9 @@ int main()
     HunterType* hunters[NUM_HUNTERS];
 
     getHunterName(hunters);
-    for(int i = 0; i < NUM_HUNTERS;i++){
-        printf("Hunter name %d is, %s\n",i, hunters[i]->hunterName);
-    }
+    // for(int i = 0; i < NUM_HUNTERS;i++){
+    //     printf("Hunter name %d is, %s\n",i, hunters[i]->hunterName);
+    // }
 
     populateRooms(house);
 

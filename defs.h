@@ -140,9 +140,6 @@ struct Room {
 };
 
 
-
-
-
 //Ghost
 struct Ghost {
     GhostClass ghostClass;
@@ -199,7 +196,7 @@ void printRoomList(RoomListType *list);
 //hunter
 void initHuntersArray(HunterType** hunters);
 void getHunterName(HunterType **hunters);
-
+void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType);
 //house 
 void populateRooms(HouseType* house);
 

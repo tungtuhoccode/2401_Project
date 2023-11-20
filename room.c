@@ -24,7 +24,6 @@ RoomType* createRoom(char* roomNameIn){
     return newRoom;
 }
 
-
 void initRoomList(RoomListType *list){
     list->head = NULL;
     list->tail = NULL;
@@ -34,7 +33,6 @@ void connectRooms(RoomType* firstRoom, RoomType* secondRoom){
     addRoom(&firstRoom->connectedRooms, secondRoom);
     addRoom(&secondRoom->connectedRooms, firstRoom);
 }
-
 
 void printRoomList(RoomListType *list){
     RoomNodeType *currNode = list->head;

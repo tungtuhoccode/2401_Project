@@ -11,11 +11,14 @@ void getHunterName(HunterType **hunters){
         fgets(hunter_name, MAX_STR-1, stdin); 
         hunter_name[strlen(hunter_name)-1] = '\0';
         
-        //allocate dynamic memory for hunter
-        
+        //allocate dynamic memory for hunter    
+        HunterType *newHunter = (HunterType*)calloc(1,sizeof(HunterType));
 
         //initialize hunter with the hunter name and a default equipment type
+        initHunter(newHunter, hunter_name, equipments[i]);
 
+        //log hunter name and equipment
+        l_hunterInit(newHunter->hunterName, newHunter->hunterEquipmentType);
     }
 }
 
