@@ -6,7 +6,7 @@
         out: house - the house to populate with rooms. Assumes house has been initialized.
 */
 void populateRooms(HouseType* house) {
-    printf("Start populating room\n");
+    // printf("Start populating room\n");
     // First, create each room
 
     // createRoom assumes that we dynamically allocate a room, initializes the values, and returns a RoomType*
@@ -55,7 +55,7 @@ void populateRooms(HouseType* house) {
     addRoom(&house->rooms, garage);
     addRoom(&house->rooms, utility_room);
 
-    printf("finish populating room\n");
+    // printf("finish populating room\n");
 }
 
 void initHouse(HouseType **house){
@@ -92,6 +92,28 @@ void freeHouse(HouseType *house){
     freeRoom(&house->rooms);
     freeRoomList(&house->rooms);
     free(house);
+}
+
+void placeGhostInRandomRoom(GhostType *ghost, HouseType *house){
+    while(C_TRUE){
+        int ghostAdded = C_FALSE;
+
+        RoomNodeType *currNode = house->rooms.head;
+        while(currNode != NULL){
+            RoomType *currRoom = currNode->data;
+            //add ghost to a room randomly
+            int rand = getRandomInRange(2);
+            if(rand == 0){
+                ghost->inRoom = currRoom;
+                ghostAdded = C_TRUE;
+                break;
+            }
+            currNode = currNode->next;
+        }
+
+        //if ghost is succesfully added
+        if(ghostAdded) break;
+    }
 }
 
 void printHuntersInHouse(HouseType *house){

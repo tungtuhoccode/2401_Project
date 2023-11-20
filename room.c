@@ -61,6 +61,7 @@ void printRoomList(RoomListType *list){
         printRoom(currNode->data);
         currNode = currNode->next;
     }
+    printf("\n");
 }
 
 void printRoom(RoomType *room){

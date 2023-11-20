@@ -130,7 +130,7 @@ struct Ghost {
     GhostClass ghostClass;
     RoomType *inRoom; 
     int boredomTimer;
-    EvidenceType allEvidenceTypes[NUMB_EV_TYPES];
+    EvidenceType ghostEvidenceTypes[NUMB_EV_TYPES];
 };
 
 //House
@@ -194,4 +194,13 @@ void printHuntersInHouse(HouseType *house);
 void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource);
 void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource);
 
-//main function 
+void placeGhostInRandomRoom(GhostType *ghost, HouseType *house);
+
+//ghost 
+void initGhost(GhostType **ghost);
+void initGhostEvidenceTypeArray(GhostType *ghost);
+void freeGhost(GhostType *ghost);
+//main function
+
+//helper in main
+int getRandomInRange(int max);

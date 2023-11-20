@@ -1,5 +1,5 @@
 
-TARGETS= main.c hunter.c room.c evidence.c house.c logger.c utils.c
+TARGETS= main.c hunter.c room.c evidence.c house.c logger.c utils.c ghost.c 
 
 
 current: 
