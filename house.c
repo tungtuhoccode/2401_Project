@@ -6,6 +6,7 @@
         out: house - the house to populate with rooms. Assumes house has been initialized.
 */
 void populateRooms(HouseType* house) {
+    printf("Start populating room\n");
     // First, create each room
 
     // createRoom assumes that we dynamically allocate a room, initializes the values, and returns a RoomType*
@@ -53,4 +54,7 @@ void populateRooms(HouseType* house) {
     addRoom(&house->rooms, living_room);
     addRoom(&house->rooms, garage);
     addRoom(&house->rooms, utility_room);
+
+    printRoomList(&house->rooms);
+    printf("finish populating room\n");
 }

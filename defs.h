@@ -22,7 +22,7 @@ typedef enum GhostClass GhostClass;
 typedef enum LoggerDetails LoggerDetails;
 
 typedef     struct  Room            RoomType; 
-typedef     struct  Evidence        EvidenceType; 
+typedef     struct  Evidence        EvidenceStructType; 
 typedef     struct  Hunter          HunterType; 
 typedef     struct  Ghost           GhostType; 
 typedef     struct  House           HouseType;
@@ -64,79 +64,7 @@ enum LoggerDetails { LOG_FEAR, LOG_BORED, LOG_EVIDENCE, LOG_SUFFICIENT, LOG_INSU
    
    */
 
-//Room
-struct Room {
-    char roomName[MAX_STR];
-    /*
-    linked list of room
-        - RoomListType
-        - RoomNodeType
 
-    linked list of evidence
-        - EvidenceListType
-        - EvidenceNodeType
-
-    Collection of hunter Linkedlist
-        - HunterType
-    Pointer to ghost
-        - GhostType
-    */
-   GhostType *roomGhost; //each room has 1 ghost
-   RoomListType connectedRooms;
-   EvidenceListType roomEvList;
-   HunterType hunters[NUM_HUNTERS];
-};
-
-
-struct RoomNodeType {
-    RoomType *data;
-    RoomNodeType *next;
-};
-
-struct RoomList {
-    RoomNodeType *head;
-    RoomNodeType *tail;
-};
-
-//House
-struct House {
-    //hunter collections
-    //linkedlist all rooms
-    //llist evidencelist
-
-    HunterType hunters[NUM_HUNTERS];
-    RoomListType rooms;
-    EvidenceListType sharedEvList;
-
-};
-
-//Ghost
-struct Ghost {
-    GhostClass ghostClass;
-    RoomType *inRoom; 
-        //pointer to the room that the ghost is in 
-    int boredomTimer;
-};
-
-//Hunter
-struct Hunter {
-    RoomType *currentRoom; //pointer to the room they are currently in
-    EvidenceType hunterEvType;
-    char hunterName[MAX_STR];
-    EvidenceListType *sharedEvidence;//pointer to collection of evidence
-    int fear;
-    int bore;
-};
-
-struct HunterNode{
-    HunterType *data;
-    HunterNodeType *next;
-};
-
-struct HunterList{
-    HunterNodeType *head;
-    HunterNodeType *tail;
-};
 
 //Evidence
 struct Evidence {
@@ -156,6 +84,83 @@ struct EvidenceList{
     EvidenceNodeType *tail;
 };
 
+//Hunter
+struct Hunter {
+    RoomType *currentRoom; //pointer to the room they are currently in
+    EvidenceStructType hunterEvType;
+    char hunterName[MAX_STR];
+    EvidenceListType *sharedEvidence;//pointer to collection of evidence
+    int fear;
+    int bore;
+};
+
+struct HunterNode{
+    HunterType *data;
+    HunterNodeType *next;
+};
+
+struct HunterList{
+    HunterNodeType *head;
+    HunterNodeType *tail;
+};
+
+
+
+//Room
+struct RoomNode {
+    RoomType *data;
+    RoomNodeType *next;
+};
+
+struct RoomList {
+    RoomNodeType *head;
+    RoomNodeType *tail;
+};
+
+struct Room {
+    char roomName[MAX_STR];
+    /*
+    linked list of room
+        - RoomListType
+        - RoomNodeType
+
+    linked list of evidence
+        - EvidenceListType
+        - EvidenceNodeType
+
+    Collection of hunter Linkedlist
+        - HunterType
+    Pointer to ghost
+        - GhostType
+    */
+   GhostType *roomGhost; //each room has 1 ghost
+   RoomListType connectedRooms;
+   EvidenceListType roomEvList;
+   HunterType* hunters[NUM_HUNTERS];
+};
+
+
+
+
+
+//Ghost
+struct Ghost {
+    GhostClass ghostClass;
+    RoomType *inRoom; 
+        //pointer to the room that the ghost is in 
+    int boredomTimer;
+};
+
+//House
+struct House {
+    //hunter collections
+    //linkedlist all rooms
+    //llist evidencelist
+
+    HunterType hunters[NUM_HUNTERS];
+    RoomListType rooms;
+    EvidenceListType sharedEvList;
+};
 
 
 
@@ -176,3 +181,25 @@ void l_ghostInit(enum GhostClass type, char* room);
 void l_ghostMove(char* room);
 void l_ghostEvidence(enum EvidenceType evidence, char* room);
 void l_ghostExit(enum LoggerDetails reason);
+
+//evidence
+void initEvidenceList(EvidenceListType* evList);
+void addEvidenceToList(EvidenceListType *list, EvidenceType *evidence);
+
+//Room functions
+RoomType* createRoom(char* roomNameIn);
+void initRoomList(RoomListType *list);
+void connectRooms(RoomType* firstRoom, RoomType* secondRoom);
+void addRoom(RoomListType *list, RoomType *room);
+
+void printRoom(RoomType *room);
+void printRoomList(RoomListType *list);
+
+//hunter
+void initHuntersArray(HunterType** hunters);
+void getHunterName(HunterType **hunters);
+
+//house 
+void populateRooms(HouseType* house);
+
+//main function 
