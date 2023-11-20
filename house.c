@@ -58,3 +58,9 @@ void populateRooms(HouseType* house) {
     printRoomList(&house->rooms);
     printf("finish populating room\n");
 }
+
+void freeHouse(HouseType *house){
+    freeRoom(&house->rooms);
+    freeRoomList(&house->rooms);
+    free(house);
+}

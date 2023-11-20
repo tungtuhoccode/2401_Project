@@ -19,11 +19,32 @@ RoomType* createRoom(char* roomNameIn){
     initEvidenceList(&newRoom->roomEvList);
 
     //hunter array
-    initHuntersArray(newRoom->hunters);
+    initHuntersArray(newRoom->huntersInRoom);
 
     return newRoom;
 }
 
+void freeRoomList(RoomListType *list){
+    RoomNodeType *currNode = list->head;
+    RoomNodeType *prevNode = NULL;
+   
+    while (currNode != NULL){
+        prevNode = currNode; 
+        currNode = currNode->next;
+        free(prevNode);
+    }
+}
+
+void freeRoom(RoomListType *list){
+    RoomNodeType *currNode = list->head;
+   
+    while (currNode != NULL){
+        freeRoomList(&currNode->data->connectedRooms);
+        free(currNode->data);
+
+        currNode = currNode->next;
+    }
+}
 void initRoomList(RoomListType *list){
     list->head = NULL;
     list->tail = NULL;
@@ -46,10 +67,9 @@ void printRoom(RoomType *room){
     printf("room name: %s\n", room->roomName);
 
 }
+
+//free
 void addRoom(RoomListType *list, RoomType *room){
-    // NodeType *listTail = list->tail;
-    // NodeType *listHead = list->head;
-    
     RoomNodeType *newNode =  (RoomNodeType*) calloc(1, sizeof(RoomNodeType));
     newNode->data = room;
     newNode->next = NULL;

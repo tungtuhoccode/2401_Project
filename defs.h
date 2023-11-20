@@ -15,6 +15,7 @@
 #define GHOST_WAIT      600
 #define NUM_HUNTERS     4
 #define FEAR_MAX        10
+#define NUMB_EV_TYPES   3
 #define LOGGING         C_TRUE
 
 typedef enum EvidenceType EvidenceType;
@@ -64,14 +65,10 @@ enum LoggerDetails { LOG_FEAR, LOG_BORED, LOG_EVIDENCE, LOG_SUFFICIENT, LOG_INSU
    
    */
 
-
-
 //Evidence
 struct Evidence {
     EvidenceType evidenceType;
-    char evidenceName[MAX_STR];
     sem_t evidence_mutex;
-    float evidenceValues[4]; 
 };
 
 struct EvidenceNode{
@@ -119,24 +116,12 @@ struct RoomList {
 
 struct Room {
     char roomName[MAX_STR];
-    /*
-    linked list of room
-        - RoomListType
-        - RoomNodeType
 
-    linked list of evidence
-        - EvidenceListType
-        - EvidenceNodeType
-
-    Collection of hunter Linkedlist
-        - HunterType
-    Pointer to ghost
-        - GhostType
-    */
    GhostType *roomGhost; //each room has 1 ghost
    RoomListType connectedRooms;
    EvidenceListType roomEvList;
-   HunterType* hunters[NUM_HUNTERS];
+   HunterType* huntersInRoom[NUM_HUNTERS];
+   sem_t room_mutex;
 };
 
 
@@ -144,8 +129,8 @@ struct Room {
 struct Ghost {
     GhostClass ghostClass;
     RoomType *inRoom; 
-        //pointer to the room that the ghost is in 
     int boredomTimer;
+    EvidenceType allEvidenceTypes[NUMB_EV_TYPES];
 };
 
 //House
@@ -154,9 +139,9 @@ struct House {
     //linkedlist all rooms
     //llist evidencelist
 
-    HunterType hunters[NUM_HUNTERS];
-    RoomListType rooms;
-    EvidenceListType sharedEvList;
+    HunterType huntersInHouse[NUM_HUNTERS];
+    RoomListType rooms; 
+    EvidenceListType sharedEvList; 
 };
 
 
@@ -168,6 +153,8 @@ enum GhostClass randomGhost();  // Return a randomly selected a ghost type
 void ghostToString(enum GhostClass, char*); // Convert a ghost type to a string, stored in output paremeter
 void evidenceToString(enum EvidenceType, char*); // Convert an evidence type to a string, stored in output parameter
 
+
+void clearBuffer();
 // Logging Utilities
 void l_hunterInit(char* name, enum EvidenceType equipment);
 void l_hunterMove(char* name, char* room);
@@ -193,11 +180,16 @@ void addRoom(RoomListType *list, RoomType *room);
 void printRoom(RoomType *room);
 void printRoomList(RoomListType *list);
 
+void freeRoom(RoomListType *list);
+void freeRoomList(RoomListType *list);
 //hunter
 void initHuntersArray(HunterType** hunters);
 void getHunterName(HunterType **hunters);
 void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType);
+void freeHunterList(HunterType **hunters);
+
 //house 
 void populateRooms(HouseType* house);
+void freeHouse(HouseType *house);
 
 //main function 

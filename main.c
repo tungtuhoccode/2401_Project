@@ -12,17 +12,19 @@ int main()
     // populateRooms(&house);
 
     //Initilize: 
-    HouseType *house = (HouseType*) calloc(1, sizeof(HouseType));
-    HunterType* hunters[NUM_HUNTERS];
+    HouseType *house = (HouseType*) calloc(1, sizeof(HouseType)); //allocate data, have to free later
+    HunterType* hunters[NUM_HUNTERS]; //allocated data, have to free later
 
     getHunterName(hunters);
-    // for(int i = 0; i < NUM_HUNTERS;i++){
-    //     printf("Hunter name %d is, %s\n",i, hunters[i]->hunterName);
-    // }
-
     populateRooms(house);
+
+    //free
+    freeHunterList(hunters);
+
+    freeHouse(house);
 
     return 0;
 }
+
 
 
