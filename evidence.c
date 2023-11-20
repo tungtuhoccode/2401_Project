@@ -1,11 +1,12 @@
 #include "defs.h"
 
+
 void initEvidenceList(EvidenceListType* evList){
     evList->head = NULL;
     evList->tail = NULL;
 }
 
-void addEvidenceToList(EvidenceListType *list, EvidenceType *evidence){
+void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence){
     // NodeType *listTail = list->tail;
     // NodeType *listHead = list->head;
     

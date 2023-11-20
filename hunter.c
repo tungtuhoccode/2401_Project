@@ -1,19 +1,31 @@
 #include "defs.h"
 
 void getHunterName(HunterType **hunters){
+    int equipments[NUM_HUNTERS] = {EMF, TEMPERATURE, FINGERPRINTS, SOUND};
     int i;
     
     for(i = 0; i < NUM_HUNTERS;i++){
+        //get user input for hunter name
         printf("Enter the hunter name: ");
         char hunter_name[MAX_STR];
         fgets(hunter_name, MAX_STR-1, stdin); 
         hunter_name[strlen(hunter_name)-1] = '\0';
         
-        strcpy(hunters[i]->hunterName, hunter_name);
-        printf("Hunter name %d is, %s\n",i, hunters[i]->hunterName);
+        //allocate dynamic memory for hunter
+        
+
+        //initialize hunter with the hunter name and a default equipment type
+
     }
 }
 
+void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType){
+    strcpy(hunter->hunterName, hunterNameIn);
+    hunter->hunterEquipmentType = hunterEquipmentType;
+    hunter->sharedEvidence = NULL;
+    hunter->fear = 0;
+    hunter->bore = 0;
+}
 
 void initHuntersArray(HunterType** hunters){
     for(int i = 0;i<NUM_HUNTERS;i++){

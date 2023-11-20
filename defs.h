@@ -71,11 +71,11 @@ struct Evidence {
     EvidenceType evidenceType;
     char evidenceName[MAX_STR];
     sem_t evidence_mutex;
-    float evidenceValues[4];
+    float evidenceValues[4]; 
 };
 
 struct EvidenceNode{
-    EvidenceType *data;
+    EvidenceStructType *data;
     EvidenceNodeType *next;
 };
 
@@ -87,7 +87,7 @@ struct EvidenceList{
 //Hunter
 struct Hunter {
     RoomType *currentRoom; //pointer to the room they are currently in
-    EvidenceStructType hunterEvType;
+    EvidenceType hunterEquipmentType;
     char hunterName[MAX_STR];
     EvidenceListType *sharedEvidence;//pointer to collection of evidence
     int fear;
@@ -183,8 +183,9 @@ void l_ghostEvidence(enum EvidenceType evidence, char* room);
 void l_ghostExit(enum LoggerDetails reason);
 
 //evidence
+void initEvidence();
 void initEvidenceList(EvidenceListType* evList);
-void addEvidenceToList(EvidenceListType *list, EvidenceType *evidence);
+void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence);
 
 //Room functions
 RoomType* createRoom(char* roomNameIn);

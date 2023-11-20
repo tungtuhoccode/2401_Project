@@ -13,21 +13,12 @@ int main()
 
     //Initilize: 
     HouseType *house = (HouseType*) calloc(1, sizeof(HouseType));
+    HunterType* hunters[NUM_HUNTERS];
 
-    // HunterType hunter1, hunter2, hunter3, hunter4;
-    // HunterType* hunters[NUM_HUNTERS];
-    // hunters[0] = &hunter1;
-    // hunters[1] = &hunter2;
-    // hunters[2] = &hunter3;
-    // hunters[3] = &hunter4;
-
-    // struct Room* van                = createRoom("Van");
-
-
-    // getHunterName(hunters);
-    // for(int i = 0; i < NUM_HUNTERS;i++){
-    //     printf("Hunter name %d is, %s\n",i, hunters[i]->hunterName);
-    // }
+    getHunterName(hunters);
+    for(int i = 0; i < NUM_HUNTERS;i++){
+        printf("Hunter name %d is, %s\n",i, hunters[i]->hunterName);
+    }
 
     populateRooms(house);
 
