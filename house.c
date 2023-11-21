@@ -80,8 +80,6 @@ void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource){
     }
 }
 
-
-
 void freeHouse(HouseType *house){
     freeRoom(&house->rooms);
     freeRoomList(&house->rooms);

@@ -18,7 +18,7 @@ int main()
     printRoomList(&house->rooms);
 
     HunterType* hunters[NUM_HUNTERS]; 
-    createNewHunters(hunters);
+    createNewHunters(hunters, &house->sharedEvList);
 
     GhostType *ghost;
     initGhost(&ghost);
@@ -26,14 +26,21 @@ int main()
     l_ghostInit(ghost->ghostClass, ghost->inRoom->roomName);
 
     placeHuntersInFirstRoom(house, hunters);
+
     printHuntersInHouse(house);
 
-    addHunterToRoom(house->rooms.head->next->data, house->huntersInHouse[0]);
-    addHunterToRoom(house->rooms.head->next->data, house->huntersInHouse[1]);
+    RoomType *VanRoom = house->rooms.head->data;
+
+    // addHunterToRoom(VanRoom, house->huntersInHouse[0]);
+    // addHunterToRoom(VanRoom, house->huntersInHouse[1]);
+    // addHunterToRoom(VanRoom, house->huntersInHouse[2]);
+    // addHunterToRoom(VanRoom, house->huntersInHouse[3]);
+    // removeHunterFromRoom(house->rooms.head->next->data, house->huntersInHouse[3]);
     printHuntersInRoom(house->rooms.head->next->data);
 
 
     //Thread creation
+    //Simnulation started
     pthread_t ghostThread, hunterThread[NUM_HUNTERS];
 
     pthread_create(&ghostThread, NULL, runGhostSimulationThread, ghost);
@@ -67,14 +74,39 @@ int main()
 }
 
 void* runGhostSimulationThread(void* arg){   
-    printf("Ghost thread is running\n");
-    printf("Ghost thread is running2");
+    GhostType* ghost = (GhostType*) arg;
 
 }
 
 void* runHunterSimulationThread(void* arg){   
+    HunterType* hunter = (HunterType*) arg;
+    
+    int firstmove = C_TRUE;
+    while (hunter->fear < FEAR_MAX && hunter->bore < BOREDOM_MAX){
+        if (checkGhostInRoom(hunter->currentRoom) == C_TRUE){//NOTE: need to update to use semaphore
+            hunter->fear++;
+            hunter->bore = 0;
+        } else {
+            hunter->bore++;
+        }
+
+        int choice = randInt(0, 3);
+        if(choice == 0){
+            collectEvidence(hunter, &hunter->currentRoom->roomEvList); //!!!!!NOTE: TEST
+        } else if (choice == 1){
+            moveHunter(hunter, &hunter->currentRoom->connectedRooms, firstmove); //DONE TEST
+            firstmove = C_FALSE;
+        } else {
+            reviewEvidence(hunter, hunter->sharedEvList); //!!!!!NOTE: TEST and if count == 3 exit the program
+        }
+        //REMEMBER TO SLEEP
+        sleep(HUNTER_WAIT/1000/50);
+    }
+
     printf("Hunter thread is running\n");
+
     printf("Hunter thread is running after sleep\n");
+    return 0;
 }
 
 //get random number in range (0,max-1)

@@ -1,6 +1,6 @@
 #include "defs.h"
 
-void createNewHunters(HunterType **hunters){
+void createNewHunters(HunterType **hunters, EvidenceListType *evList){
     int equipments[NUM_HUNTERS] = {EMF, TEMPERATURE, FINGERPRINTS, SOUND};
     char hunterNames[NUM_HUNTERS][MAX_STR] = {
         "Tung Tran",
@@ -61,7 +61,7 @@ void createNewHunters(HunterType **hunters){
         HunterType *newHunter = (HunterType*)calloc(1,sizeof(HunterType));
 
         //initialize hunter with the hunter name and a default equipment type
-        initHunter(newHunter, hunter_name, equipments[choice]);
+        initHunter(newHunter, hunter_name, equipments[choice], evList);
 
         //set the hunter into the array
         hunters[i] = newHunter;
@@ -80,7 +80,9 @@ void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSo
         RoomType *firstRoom = houseDestination->rooms.head->data;
         firstRoom->huntersInRoom[i] = huntersSource[i];
         firstRoom->countHunter++;
+        huntersSource[i]->currentRoom = firstRoom;
     }
+
 }
 
 void freeHunterList(HunterType **hunters){
@@ -89,10 +91,10 @@ void freeHunterList(HunterType **hunters){
     }
 }
 
-void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType){
+void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType, EvidenceListType *sharedEvList){
     strcpy(hunter->hunterName, hunterNameIn);
     hunter->hunterEquipmentType = hunterEquipmentType;
-    hunter->sharedEvidence = NULL;
+    hunter->sharedEvList = sharedEvList;
     hunter->fear = 0;
     hunter->bore = 0;
 }
