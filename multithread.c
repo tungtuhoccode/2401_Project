@@ -119,6 +119,7 @@ void moveHunter(HunterType* hunter, RoomListType* connectedRooms, int firstMove)
                 printf("%s is currently in  (%s)\n",hunter->hunterName, hunter->currentRoom->roomName);
                 printf("Trying to move to  (%s)\n",newRoom->roomName);
                 
+                //CHANGE CODE TO AVOID DEADLOCK
                 sem_wait(&oldRoom->room_mutex);
                 sem_wait(&newRoom->room_mutex);
 
