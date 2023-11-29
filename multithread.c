@@ -24,7 +24,6 @@ int checkGhostInRoom(RoomType *room){
     return result;
 }
 
-
 int checkHunterInRoom(RoomType *room){
     sem_wait(&room->room_mutex);
 

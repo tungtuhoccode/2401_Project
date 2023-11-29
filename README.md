@@ -18,12 +18,16 @@ The program will have the hunters with different devices to hunt the ghost in a 
 - utils.c: Contains all code of other helper functions
 - ghost.c: Contains all code related to ghosts
 - multithread.c: Contains all code related to multithreads
+- Makefile: Uses to build the project using `make`
+- README.md: Contains this description
+- Github_repo_history.png: For bonus git and github using
 
 # Compiling: 
- 
+1. Navigate to the directory containing all files in a terminal
+2. Using Makefile: In the terminal, type `make all` to compile
 
 # Running:
-
+Use the command `make run` while in the directory containing the executable file to run the program
 
 # Usage instructions:
 1. Input each hunter name and choose the device for them

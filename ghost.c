@@ -39,7 +39,7 @@ void initGhostEvidenceTypeArray(GhostType *ghost){
             ghost->ghostEvidenceTypes[2] = SOUND;
             break;
         default:
-            ghost->ghostEvidenceTypes[0] = ghost->ghostEvidenceTypes[1] = ghost->ghostEvidenceTypes[2] = GH_UNKNOWN;
+            ghost->ghostEvidenceTypes[0] = ghost->ghostEvidenceTypes[1] = ghost->ghostEvidenceTypes[2] = (EvidenceType) GH_UNKNOWN;
             break;
     }
 }

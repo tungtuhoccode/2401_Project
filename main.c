@@ -1,10 +1,7 @@
 #include "defs.h"
 
-
-
 int main()
 {
-    int i = 0;
     // Initialize the random number generator
     srand(time(NULL));
 
@@ -15,7 +12,6 @@ int main()
     HouseType *house;
     initHouse(&house);
     populateRooms(house); 
-    //printRoomList(&house->rooms);
 
     GhostType *ghost;
     initGhost(&ghost);
@@ -47,7 +43,7 @@ int main()
 
     freeHouse(house);
     freeHunterList(hunters);
-    
+
     freeEvidence(&ghost->allEvidenceInHouseList);
     freeEvidenceList(&ghost->allEvidenceInHouseList);
     freeGhost(ghost);
@@ -78,6 +74,7 @@ void* runGhostSimulationThread(void* arg){
     }
     
     l_ghostExit(LOG_BORED);
+    return 0;
 }
 
 void* runHunterSimulationThread(void* arg){   
@@ -116,7 +113,7 @@ void* runHunterSimulationThread(void* arg){
     }
     //remove hunter from room before exit thread
     sem_wait(&hunter->currentRoom->room_mutex);
-    int remove = removeHunterFromRoom(hunter->currentRoom, hunter);
+    removeHunterFromRoom(hunter->currentRoom, hunter);
     sem_post(&hunter->currentRoom->room_mutex);
     
     l_hunterExit(hunter->hunterName, exitReason);

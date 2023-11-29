@@ -99,9 +99,6 @@ void freeEvidence(EvidenceListType *list){
 
    
     while (currNode != NULL){
-        char str[MAX_STR];
-        // evidenceToString(currNode->data->evidenceType, str);
-        // printf("%s\n",str);
         free(currNode->data);
         currNode = currNode->next;
     }
