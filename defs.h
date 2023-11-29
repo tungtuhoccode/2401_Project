@@ -196,8 +196,9 @@ int removeHunterFromRoom(RoomType *room, HunterType *hunter);
 int checkGhostInRoom(RoomType *room);
 void collectEvidence(HunterType* hunter, EvidenceListType* evidencesInRoom);
 void moveHunter(HunterType* hunter, RoomListType* connectedRooms, int firstMove);
-void reviewEvidence(HunterType* hunter, EvidenceListType* sharedEvList);
-
+int reviewEvidence(HunterType* hunter, EvidenceListType* sharedEvList);
+void moveGhostToAdjacentRoom(GhostType *ghost);
+void leaveEvidence(RoomType *room, GhostType *ghost);
 //house 
 void populateRooms(HouseType* house);
 void freeHouse(HouseType *house);
@@ -205,7 +206,7 @@ void initHouse(HouseType **house);
 void printHuntersInHouse(HouseType *house);
 void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource);
 void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource);
-void placeGhostInRandomRoom(GhostType *ghost, HouseType *house);
+void placeGhostInRandomRoom(GhostType *ghost, HouseType *house, int firstMove);
 
 
 //ghost 
@@ -216,6 +217,8 @@ void freeGhost(GhostType *ghost);
 //main function
 void* runGhostSimulationThread(void *arg);
 void* runHunterSimulationThread(void* arg);
+void printResult(HouseType* house);
+void identifyGhost(HouseType* house);
 
 //helper in main
 int getRandomInRange(int max);

@@ -2,12 +2,13 @@
 TARGETS= main.c hunter.c room.c evidence.c house.c logger.c utils.c ghost.c multithread.c
 tung = main2.c hunter.c room.c evidence.c house.c logger.c utils.c ghost.c multithread.c
 
+mthread: 
+		gcc -g -fsanitize=thread -pthread -o project ${TARGETS}
 current: 
 		gcc -g -o project ${TARGETS}
 currentt: 
 		gcc -g -o project ${tung}
-mthread: 
-		gcc -g -fsanitize=thread -pthread -o project ${TARGETS}
+
 mthreadt: 
 		gcc -g -fsanitize=thread -pthread -o project ${tung}
 		

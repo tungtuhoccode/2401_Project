@@ -2,42 +2,27 @@
 
 int main()
 {
+    int i = 0;
     // Initialize the random number generator
     srand(time(NULL));
 
     // Create the house: You may change this, but it's here for demonstration purposes
     // Note: This code will not compile until you have implemented the house functions and structures
-    // HouseType house;
-
-    // populateRooms(&house);
 
     //Initilize
     HouseType *house;
     initHouse(&house);
     populateRooms(house); 
-    printRoomList(&house->rooms);
+    //printRoomList(&house->rooms);
 
     HunterType* hunters[NUM_HUNTERS]; 
     createNewHunters(hunters, &house->sharedEvList);
+    placeHuntersInFirstRoom(house, hunters);
 
     GhostType *ghost;
     initGhost(&ghost);
-    placeGhostInRandomRoom(ghost, house);
+    placeGhostInRandomRoom(ghost, house, C_TRUE);
     l_ghostInit(ghost->ghostClass, ghost->inRoom->roomName);
-
-    placeHuntersInFirstRoom(house, hunters);
-
-    printHuntersInHouse(house);
-
-    RoomType *VanRoom = house->rooms.head->data;
-
-    // addHunterToRoom(VanRoom, house->huntersInHouse[0]);
-    // addHunterToRoom(VanRoom, house->huntersInHouse[1]);
-    // addHunterToRoom(VanRoom, house->huntersInHouse[2]);
-    // addHunterToRoom(VanRoom, house->huntersInHouse[3]);
-    // removeHunterFromRoom(house->rooms.head->next->data, house->huntersInHouse[3]);
-    printHuntersInRoom(house->rooms.head->next->data);
-
 
     //Thread creation
     //Simnulation started
@@ -54,17 +39,8 @@ int main()
         pthread_join(hunterThread[i], NULL);
     }
 
-
-
-    // RoomNodeType *currNode = house->rooms.head;
-    // while(currNode != NULL){
-    //     printf("Connected room to %s are:\n", currNode->data->roomName);
-    //     printRoomList(&currNode->data->connectedRooms);
-    //     printf("\n\n-----------------------\n\n");
-    //     currNode = currNode->next;
-    // }
-
-
+    printResult(house);
+    
     //free
     freeGhost(ghost);
     freeHunterList(hunters);
@@ -75,37 +51,70 @@ int main()
 
 void* runGhostSimulationThread(void* arg){   
     GhostType* ghost = (GhostType*) arg;
+    
+    while(ghost->boredomTimer < BOREDOM_MAX){
+        if(checkHunterInRoom(ghost->inRoom)){
+            ghost->boredomTimer = 0;
+            if(randInt(0,2) == 0 ){
+                leaveEvidence(ghost->inRoom, ghost);
+            }
+        }else{
+            ghost->boredomTimer++;
+            int randNumb = randInt(0,3);
+            if(randNumb == 0 ){
+                leaveEvidence(ghost->inRoom, ghost);
+            }else if (randNumb == 1){
+                moveGhostToAdjacentRoom(ghost);
+            }
 
+        }
+        usleep(GHOST_WAIT);
+    }
+    
+    l_ghostExit(LOG_BORED);
 }
 
 void* runHunterSimulationThread(void* arg){   
     HunterType* hunter = (HunterType*) arg;
     
     int firstmove = C_TRUE;
+    int exitReason = -1;
+ 
     while (hunter->fear < FEAR_MAX && hunter->bore < BOREDOM_MAX){
-        if (checkGhostInRoom(hunter->currentRoom) == C_TRUE){//NOTE: need to update to use semaphore
+        if (checkGhostInRoom(hunter->currentRoom) == C_TRUE){
             hunter->fear++;
             hunter->bore = 0;
         } else {
             hunter->bore++;
         }
-
         int choice = randInt(0, 3);
         if(choice == 0){
-            collectEvidence(hunter, &hunter->currentRoom->roomEvList); //!!!!!NOTE: TEST
+            collectEvidence(hunter, &hunter->currentRoom->roomEvList);
         } else if (choice == 1){
-            moveHunter(hunter, &hunter->currentRoom->connectedRooms, firstmove); //DONE TEST
+            moveHunter(hunter, &hunter->currentRoom->connectedRooms, firstmove);
             firstmove = C_FALSE;
         } else {
-            reviewEvidence(hunter, hunter->sharedEvList); //!!!!!NOTE: TEST and if count == 3 exit the program
+            int count = reviewEvidence(hunter, hunter->sharedEvList);
+            if(count == 3){
+                exitReason = LOG_EVIDENCE;
+                break;
+            }
         }
-        //REMEMBER TO SLEEP
-        sleep(HUNTER_WAIT/1000/50);
+
+        usleep(HUNTER_WAIT);
     }
-
-    printf("Hunter thread is running\n");
-
-    printf("Hunter thread is running after sleep\n");
+    if(hunter->fear >= FEAR_MAX){
+        exitReason = LOG_FEAR;
+    }
+    if(hunter->bore >= BOREDOM_MAX){
+        exitReason = LOG_BORED;
+    }
+    //remove hunter from room before exit thread
+    sem_wait(&hunter->currentRoom->room_mutex);
+    int remove = removeHunterFromRoom(hunter->currentRoom, hunter);
+    sem_post(&hunter->currentRoom->room_mutex);
+    
+    l_hunterExit(hunter->hunterName, exitReason);
     return 0;
 }
 
@@ -114,5 +123,56 @@ int getRandomInRange(int max){
     return rand() % max;
 }
 
+void printResult(HouseType* house){
+    int countHunter = 0;
+    for(int i = 0; i < NUM_HUNTERS; i++){
+        HunterType *hunter = house->huntersInHouse[i];
+        if(hunter->fear >= FEAR_MAX || hunter->bore >= BOREDOM_MAX){
+            countHunter++;
+            if(hunter->fear >= FEAR_MAX){
+                printf("%s is too fear.\n", hunter->hunterName);
+            }
+            if(hunter->bore >= BOREDOM_MAX) {
+                printf("%s is too bore.\n", hunter->hunterName);
+            } 
+        }
+    }
+    if(countHunter == 4){
+        printf("The ghost has won.\n");
+    }
 
+    printf("List of all evidences:\n");
+    printEvidenceList(&house->sharedEvList);
+    identifyGhost(house);
+}
+
+void identifyGhost(HouseType* house){
+    sem_wait(&house->sharedEvList.evList_mutex);
+    EvidenceNodeType* currNode = house->sharedEvList.head;
+    int evArr[EV_COUNT]= {-1, -1, -1, -1};
+    int count = 0;
+
+    while (currNode != NULL){
+        if(evArr[currNode->data->evidenceType] == -1){
+            evArr[currNode->data->evidenceType] = 1;
+            count ++;
+        }
+        if(count == 3){
+            printf("Enough evidence to guess the ghost type...\n");
+            if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0){
+                printf("POLTERGEIST is found.\n");  
+            } else if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[SOUND] > 0){
+                printf("BANSEE is found.\n");
+            } else if(evArr[EMF] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
+                printf("BULLIES is found.\n");
+            } else if(evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
+                printf("PHANTOM is found.\n");
+            }
+            printf("\n");
+            break;
+        }
+        currNode = currNode->next;
+    }
+    sem_post(&house->sharedEvList.evList_mutex);
+}
 

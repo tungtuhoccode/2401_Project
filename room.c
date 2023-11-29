@@ -93,7 +93,6 @@ void addRoom(RoomListType *list, RoomType *room){
 }
 
 void printHuntersInRoom(RoomType *room){
-    sem_wait(&room->room_mutex);
     // printf("\nALl hunters in room (%s) are: \n", room->roomName);
     if(room->countHunter == 0){
         printf("None in room (%s)\n", room->roomName);
@@ -105,6 +104,5 @@ void printHuntersInRoom(RoomType *room){
         }
     }
     printf("\n\n");
-    sem_post(&room->room_mutex);
 }
 

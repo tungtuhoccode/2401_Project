@@ -15,7 +15,7 @@ void initEvidenceList(EvidenceListType* evList){
 void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence){
     // NodeType *listTail = list->tail;
     // NodeType *listHead = list->head;
-    sem_wait(&list->evList_mutex);
+    // sem_wait(&list->evList_mutex);
     EvidenceNodeType *newNode =  (EvidenceNodeType*) calloc(1, sizeof(EvidenceNodeType));
     newNode->data = evidence;
     newNode->next = NULL;
@@ -33,7 +33,7 @@ void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence){
         list->tail->next = newNode;
         list->tail = list->tail->next;
     }
-    sem_post(&list->evList_mutex);
+    // sem_post(&list->evList_mutex);
 }
 
 void printEvidenceList(EvidenceListType *list){
@@ -42,7 +42,7 @@ void printEvidenceList(EvidenceListType *list){
     while(currNode != NULL){
         char test[MAX_STR];
         evidenceToString(currNode->data->evidenceType, test);
-        printf("%s ->",test);
+        printf("%s -> ",test);
         currNode = currNode->next;
     }
     printf(")");
@@ -50,7 +50,7 @@ void printEvidenceList(EvidenceListType *list){
 }
 
 void removeEvidenceFromList(EvidenceListType *list, EvidenceStructType *evidence){
-    sem_wait(&list->evList_mutex);
+    // sem_wait(&list->evList_mutex);
     // if size = 0, return
     if (list->tail == NULL && list->head == NULL){
         // return C_FALSE;
@@ -109,6 +109,6 @@ void removeEvidenceFromList(EvidenceListType *list, EvidenceStructType *evidence
             }
         }
     }
-    sem_post(&list->evList_mutex);
+    // sem_post(&list->evList_mutex);
 }
 

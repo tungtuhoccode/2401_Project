@@ -2,6 +2,9 @@
 
 int main()
 {
+    
+
+
     // Initialize the random number generator
     srand(time(NULL));
 
@@ -65,11 +68,12 @@ int main()
     // }
 
 
+
     //free
     freeGhost(ghost);
     freeHunterList(hunters);
     freeHouse(house);
-
+    
     return 0;
 }
 
@@ -170,5 +174,55 @@ int getRandomInRange(int max){
     return rand() % max;
 }
 
+void printResult(HouseType* house){
+    HunterType* hunters[] = house->huntersInHouse;
+    int countHunter = 0;
+    for(int i = 0; i < NUM_HUNTERS; i++){
+        if(hunters[i]->fear >= FEAR_MAX || hunters[i]->bore >= BOREDOM_MAX){
+            countHunter++;
+            if(hunters[i]->fear >= FEAR_MAX){
+                printf("%s is too fear.\n", hunters[i]->hunterName);
+            }
+            if(hunters[i]->bore >= BOREDOM_MAX) {
+                printf("%s is too bore.\n", hunters[i]->hunterName);
+            } 
+        }
+    }
+    if(countHunter == 4){
+        printf("The ghost has won.\n");
+    }
 
+    printf("List of all evidences:\n");
+    printEvidenceList(&house->sharedEvList);
+    identifyGhost(house);
+}
 
+void identifyGhost(HouseType* house){
+    sem_wait(&house->sharedEvList.evList_mutex);
+    EvidenceNodeType* currNode = house->sharedEvList.head;
+    int evArr[EV_COUNT]= {-1, -1, -1, -1};
+    int count = 0;
+
+    while (currNode != NULL){
+        if(evArr[currNode->data->evidenceType] == -1){
+            evArr[currNode->data->evidenceType] = 1;
+            count ++;
+        }
+        if(count == 3){
+            printf("Enough evidence to guess the ghost type...\n");
+            if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0){
+                printf("POLTERGEIST is found.\n");  
+            } else if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[SOUND] > 0){
+                printf("BANSEE is found.\n");
+            } else if(evArr[EMF] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
+                printf("BULLIES is found.\n");
+            } else if(evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
+                printf("PHANTOM is found.\n");
+            }
+            printf("\n");
+            break;
+        }
+        currNode = currNode->next;
+    }
+    sem_post(&house->sharedEvList.evList_mutex);
+}
