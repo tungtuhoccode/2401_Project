@@ -132,6 +132,7 @@ struct Ghost {
     RoomType *inRoom; 
     int boredomTimer;
     EvidenceType ghostEvidenceTypes[NUMB_EV_TYPES];
+    EvidenceListType allEvidenceInHouseList; 
 };
 
 //House
@@ -139,6 +140,7 @@ struct House {
     HunterType *huntersInHouse[NUM_HUNTERS];
     RoomListType rooms; 
     EvidenceListType sharedEvList; 
+   
 };
 
 
@@ -169,6 +171,8 @@ void initEvidenceList(EvidenceListType* evList);
 void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence);
 void printEvidenceList(EvidenceListType *list);
 void removeEvidenceFromList(EvidenceListType *list, EvidenceStructType *evidence);
+void freeEvidence(EvidenceListType *list);
+void freeEvidenceList(EvidenceListType *list);
 
 //Room functions
 RoomType* createRoom(char* roomNameIn);

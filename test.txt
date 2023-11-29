@@ -1,568 +1,149 @@
-room name: Van
-room name: Hallway
-room name: Master Bedroom
-room name: Boy's Bedroom
-room name: Bathroom
-room name: Basement
-room name: Basement Hallway
-room name: Right Storage Room
-room name: Left Storage Room
-room name: Kitchen
-room name: Living Room
-room name: Garage
-room name: Utility Room
-
-[HUNTER INIT] [Tung Tran] is a [EMF] hunter
-
-[HUNTER INIT] [Khoi Le] is a [TEMPERATURE] hunter
-
-[HUNTER INIT] [Ngan Huynh] is a [FINGERPRINTS] hunter
-
-[HUNTER INIT] [Hoa Nguyen] is a [SOUND] hunter
-
-[GHOST INIT] Ghost is a [Banshee] in room [Boy's Bedroom]
-
-ALl hunters in house are: 
-Hunter 1: Tung Tran
-Hunter 2: Khoi Le
-Hunter 3: Ngan Huynh
-Hunter 4: Hoa Nguyen
----------------------------
-
-ALl hunters in first room (Van) are: 
-Hunter 1: Tung Tran
-Hunter 2: Khoi Le
-Hunter 3: Ngan Huynh
-Hunter 4: Hoa Nguyen
----------------------------
-None in room (Hallway)
-
-
-Hunter Tung Tran Checking ghost in room: Van
-Done Checking ghost in room: Van
-collecting evidence. hunterName: Tung Tran.
-waiting to unlock evList_mutex, hunter Tung Tran
-finished, unlocked evList_mutex, hunter Tung Tran
-runningGhost is currently in  (Boy's Bedroom)
-Trying to move to  (Hallway)
-[GHOST MOVE] Ghost has moved into [Hallway]
-
-Hunter Tung Tran Checking ghost in room: Van
-Done Checking ghost in room: Van
-moving hunter. hunterName: Tung Tran.
-Tung Tran is currently in  (Van)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Tung Tran] has moved into [Hallway]
-
-Hunter Khoi Le Checking ghost in room: Van
-Done Checking ghost in room: Van
-moving hunter. hunterName: Khoi Le.
-Khoi Le is currently in  (Van)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Khoi Le] has moved into [Hallway]
-
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 0
-Hunter Ngan Huynh Checking ghost in room: Van
-Done Checking ghost in room: Van
-Number of evidences: 0
-Hunter Hoa Nguyen Checking ghost in room: Van
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 0
-Done Checking ghost in room: Van
-moving hunter. hunterName: Hoa Nguyen.
-Hoa Nguyen is currently in  (Van)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Hoa Nguyen] has moved into [Hallway]
-
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-collecting evidence. hunterName: Tung Tran.
-waiting to unlock evList_mutex, hunter Tung Tran
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Read of size 8 at 0x7b04000008f8 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:110 (project+0x4a2a)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous write of size 8 at 0x7b04000008f8 by thread T1:
-    #0 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:33 (project+0x2bfc)
-    #1 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #2 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Location is heap block of size 16 at 0x7b04000008f0 allocated by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:19 (project+0x2ac2)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T1 (tid=2282767, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:46 (project+0x16a6)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/multithread.c:110 in collectEvidence
-==================
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-collecting evidence. hunterName: Khoi Le.
-waiting to unlock evList_mutex, hunter Khoi Le
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Write of size 8 at 0x7b3400000128 by thread T3:
-    #0 removeEvidenceFromList /home/student/Documents/Final-Project/evidence.c:79 (project+0x2f4c)
-    #1 collectEvidence /home/student/Documents/Final-Project/multithread.c:104 (project+0x49e4)
-    #2 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous read of size 8 at 0x7b3400000128 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:96 (project+0x4909)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Location is heap block of size 208 at 0x7b34000000d0 allocated by main thread:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 createRoom /home/student/Documents/Final-Project/room.c:11 (project+0x23f1)
-    #2 populateRooms /home/student/Documents/Final-Project/house.c:15 (project+0x3186)
-    #3 main /home/student/Documents/Final-Project/main.c:17 (project+0x1507)
-
-  Thread T3 (tid=2282769, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/evidence.c:79 in removeEvidenceFromList
-==================
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Write of size 8 at 0x7b0400000850 by thread T3:
-    #0 free ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:711 (libtsan.so.0+0x37ab8)
-    #1 removeEvidenceFromList /home/student/Documents/Final-Project/evidence.c:80 (project+0x2f5f)
-    #2 collectEvidence /home/student/Documents/Final-Project/multithread.c:104 (project+0x49e4)
-    #3 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous read of size 8 at 0x7b0400000850 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:99 (project+0x4925)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Thread T3 (tid=2282769, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/evidence.c:80 in removeEvidenceFromList
-==================
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Write of size 8 at 0x7b0400000858 by thread T3:
-    #0 free ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:711 (libtsan.so.0+0x37ab8)
-    #1 removeEvidenceFromList /home/student/Documents/Final-Project/evidence.c:80 (project+0x2f5f)
-    #2 collectEvidence /home/student/Documents/Final-Project/multithread.c:104 (project+0x49e4)
-    #3 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous read of size 8 at 0x7b0400000858 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:110 (project+0x4a2a)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Thread T3 (tid=2282769, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/evidence.c:80 in removeEvidenceFromList
-==================
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Read of size 8 at 0x7b0400000910 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:99 (project+0x4925)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous write of size 8 at 0x7b0400000910 by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:19 (project+0x2ac2)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Location is heap block of size 16 at 0x7b0400000910 allocated by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:19 (project+0x2ac2)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T1 (tid=2282767, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:46 (project+0x16a6)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/multithread.c:99 in collectEvidence
-==================
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Read of size 4 at 0x7b0400000900 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:99 (project+0x4937)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous write of size 8 at 0x7b0400000900 by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 initEvidence /home/student/Documents/Final-Project/evidence.c:4 (project+0x29e7)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:82 (project+0x485e)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Location is heap block of size 4 at 0x7b0400000900 allocated by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 initEvidence /home/student/Documents/Final-Project/evidence.c:4 (project+0x29e7)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:82 (project+0x485e)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T1 (tid=2282767, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:46 (project+0x16a6)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/multithread.c:99 in collectEvidence
-==================
-Hunter Hoa Nguyen Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-moving hunter. hunterName: Hoa Nguyen.
-Hoa Nguyen is currently in  (Hallway)
-Trying to move to  (Kitchen)
-[HUNTER MOVE] [Hoa Nguyen] has moved into [Kitchen]
-
-Hunter Ngan Huynh Checking ghost in room: Van
-Done Checking ghost in room: Van
-collecting evidence. hunterName: Ngan Huynh.
-waiting to unlock evList_mutex, hunter Ngan Huynh
-finished, unlocked evList_mutex, hunter Ngan Huynh
-finished, unlocked evList_mutex, hunter Tung Tran
-finished, unlocked evList_mutex, hunter Khoi Le
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-Number of evidences: 2
-Hunter Ngan Huynh Checking ghost in room: Van
-Done Checking ghost in room: Van
-Number of evidences: 2
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Ngan Huynh Checking ghost in room: Van
-Done Checking ghost in room: Van
-moving hunter. hunterName: Ngan Huynh.
-Ngan Huynh is currently in  (Van)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Ngan Huynh] has moved into [Hallway]
-
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-Number of evidences: 2
-Hunter Ngan Huynh Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-collecting evidence. hunterName: Khoi Le.
-waiting to unlock evList_mutex, hunter Khoi Le
-finished, unlocked evList_mutex, hunter Khoi Le
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-moving hunter. hunterName: Tung Tran.
-Tung Tran is currently in  (Hallway)
-Trying to move to  (Master Bedroom)
-[HUNTER MOVE] [Tung Tran] has moved into [Master Bedroom]
-
-Hunter Ngan Huynh Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-Number of evidences: 2
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Tung Tran Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Tung Tran.
-waiting to unlock evList_mutex, hunter Tung Tran
-finished, unlocked evList_mutex, hunter Tung Tran
-Hunter Ngan Huynh Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-Number of evidences: 2
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Tung Tran Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-Number of evidences: 2
-Hunter Ngan Huynh Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-moving hunter. hunterName: Ngan Huynh.
-Ngan Huynh is currently in  (Hallway)
-Trying to move to  (Master Bedroom)
-[HUNTER MOVE] [Ngan Huynh] has moved into [Master Bedroom]
-
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-Number of evidences: 2
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Tung Tran Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Tung Tran.
-waiting to unlock evList_mutex, hunter Tung Tran
-finished, unlocked evList_mutex, hunter Tung Tran
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Khoi Le Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-moving hunter. hunterName: Khoi Le.
-Khoi Le is currently in  (Hallway)
-Trying to move to  (Master Bedroom)
-[HUNTER MOVE] [Khoi Le] has moved into [Master Bedroom]
-
-runningGhost is currently in  (Hallway)
-Trying to move to  (Master Bedroom)
-[GHOST MOVE] Ghost has moved into [Master Bedroom]
-
-Hunter Tung Tran Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Tung Tran.
-waiting to unlock evList_mutex, hunter Tung Tran
-finished, unlocked evList_mutex, hunter Tung Tran
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Write of size 8 at 0x7b34000001f8 by thread T1:
-    #0 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:25 (project+0x2b3a)
-    #1 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #2 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  Previous read of size 8 at 0x7b34000001f8 by thread T2:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:96 (project+0x4909)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:105 (project+0x1923)
-
-  Location is heap block of size 208 at 0x7b34000001a0 allocated by main thread:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 createRoom /home/student/Documents/Final-Project/room.c:11 (project+0x23f1)
-    #2 populateRooms /home/student/Documents/Final-Project/house.c:16 (project+0x3199)
-    #3 main /home/student/Documents/Final-Project/main.c:17 (project+0x1507)
-
-  Thread T1 (tid=2282767, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:46 (project+0x16a6)
-
-  Thread T2 (tid=2282768, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/evidence.c:25 in addEvidenceToList
-==================
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Khoi Le Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-Number of evidences: 2
-Hunter Tung Tran Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-moving hunter. hunterName: Tung Tran.
-Tung Tran is currently in  (Master Bedroom)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Tung Tran] has moved into [Hallway]
-
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Ngan Huynh.
-waiting to unlock evList_mutex, hunter Ngan Huynh
-==================
-WARNING: ThreadSanitizer: data race (pid=2282765)
-  Read of size 8 at 0x7b0400000c98 by thread T4:
-    #0 collectEvidence /home/student/Documents/Final-Project/multithread.c:110 (project+0x4a2a)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:132 (project+0x1aea)
-
-  Previous write of size 8 at 0x7b0400000c98 by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:19 (project+0x2ac2)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  As if synchronized via sleep:
-    #0 usleep ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:359 (libtsan.so.0+0x66547)
-    #1 runHunterSimulationThread /home/student/Documents/Final-Project/main.c:150 (project+0x1c27)
-
-  Location is heap block of size 16 at 0x7b0400000c90 allocated by thread T1:
-    #0 calloc ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:672 (libtsan.so.0+0x31edc)
-    #1 addEvidenceToList /home/student/Documents/Final-Project/evidence.c:19 (project+0x2ac2)
-    #2 leaveEvidence /home/student/Documents/Final-Project/multithread.c:86 (project+0x4891)
-    #3 runGhostSimulationThread /home/student/Documents/Final-Project/main.c:87 (project+0x1890)
-
-  Thread T4 (tid=2282771, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:48 (project+0x1706)
-
-  Thread T1 (tid=2282767, running) created by main thread at:
-    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:969 (libtsan.so.0+0x605b8)
-    #1 main /home/student/Documents/Final-Project/main.c:46 (project+0x16a6)
-
-SUMMARY: ThreadSanitizer: data race /home/student/Documents/Final-Project/multithread.c:110 in collectEvidence
-==================
-finished, unlocked evList_mutex, hunter Ngan Huynh
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Khoi Le Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Khoi Le.
-waiting to unlock evList_mutex, hunter Khoi Le
-finished, unlocked evList_mutex, hunter Khoi Le
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-Number of evidences: 2
-Hunter thread, Khoi Le done!
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Number of evidences: 2
-Hunter Hoa Nguyen Checking ghost in room: Kitchen
-Done Checking ghost in room: Kitchen
-moving hunter. hunterName: Hoa Nguyen.
-Hoa Nguyen is currently in  (Kitchen)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Hoa Nguyen] has moved into [Hallway]
-
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Ngan Huynh.
-waiting to unlock evList_mutex, hunter Ngan Huynh
-finished, unlocked evList_mutex, hunter Ngan Huynh
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-moving hunter. hunterName: Tung Tran.
-Tung Tran is currently in  (Hallway)
-Trying to move to  (Van)
-[HUNTER MOVE] [Tung Tran] has moved into [Van]
-
-Hunter Hoa Nguyen Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Ngan Huynh.
-waiting to unlock evList_mutex, hunter Ngan Huynh
-finished, unlocked evList_mutex, hunter Ngan Huynh
-Hunter Tung Tran Checking ghost in room: Van
-Done Checking ghost in room: Van
-moving hunter. hunterName: Tung Tran.
-Tung Tran is currently in  (Van)
-Trying to move to  (Hallway)
-[HUNTER MOVE] [Tung Tran] has moved into [Hallway]
-
-Hunter Hoa Nguyen Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-collecting evidence. hunterName: Hoa Nguyen.
-waiting to unlock evList_mutex, hunter Hoa Nguyen
-finished, unlocked evList_mutex, hunter Hoa Nguyen
-Hunter Ngan Huynh Checking ghost in room: Master Bedroom
-Done Checking ghost in room: Master Bedroom
-collecting evidence. hunterName: Ngan Huynh.
-waiting to unlock evList_mutex, hunter Ngan Huynh
-finished, unlocked evList_mutex, hunter Ngan Huynh
-Hunter Tung Tran Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Enough evidence to guess the ghost type
-(TEMPERATURE ->EMF ->TEMPERATURE ->TEMPERATURE ->SOUND ->SOUND ->)
-
-Number of evidences: 3
-Exiting hunter.
-Exiting.
-Hunter thread, Tung Tran done!
-Hunter Hoa Nguyen Checking ghost in room: Hallway
-Done Checking ghost in room: Hallway
-Enough evidence to guess the ghost type
-(TEMPERATURE ->EMF ->TEMPERATURE ->TEMPERATURE ->SOUND ->SOUND ->)
-
-Number of evidences: 3
-Exiting hunter.
-Exiting.
-Hunter thread, Hoa Nguyen done!
-Hunter thread, Ngan Huynh done!
+(EMF -> EMF -> EMF -> TEMPERATURE -> TEMPERATURE -> TEMPERATURE -> EMF -> SOUND -> )
+EMF
+EMF
+EMF
+EMF
+TEMPERATURE
+SOUND
+SOUND
+TEMPERATURE
+TEMPERATURE
+TEMPERATURE
+EMF
+TEMPERATURE
+EMF
+TEMPERATURE
+TEMPERATURE
+SOUND
+SOUND
+EMF
+SOUND
+EMF
+SOUND
+EMF
+EMF
+SOUND
+EMF
+EMF
+TEMPERATURE
+SOUND
+EMF
+TEMPERATURE
+EMF
+SOUND
+EMF
+TEMPERATURE
+EMF
+TEMPERATURE
+EMF
+TEMPERATURE
+EMF
+SOUND
+SOUND
+TEMPERATURE
+EMF
+SOUND
+SOUND
+EMF
+SOUND
+SOUND
+TEMPERATURE
+EMF
+TEMPERATURE
+TEMPERATURE
+EMF
+EMF
+TEMPERATURE
+==2474831== Invalid read of size 8
+==2474831==    at 0x10A6FF: freeEvidence (evidence.c:99)
+==2474831==    by 0x109E9C: freeHunterList (hunter.c:90)
+==2474831==    by 0x10952C: main (main.c:50)
+==2474831==  Address 0x4a91070 is 48 bytes inside a block of size 96 free'd
+==2474831==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10AC03: freeHouse (house.c:83)
+==2474831==    by 0x109520: main (main.c:49)
+==2474831==  Block was alloc'd at
+==2474831==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10AAEB: initHouse (house.c:60)
+==2474831==    by 0x1093E7: main (main.c:16)
+==2474831== 
+EMF
+EMF
+EMF
+TEMPERATURE
+TEMPERATURE
+TEMPERATURE
+==2474831== Invalid read of size 4
+==2474831==    at 0x10A70F: freeEvidence (evidence.c:104)
+==2474831==    by 0x109E9C: freeHunterList (hunter.c:90)
+==2474831==    by 0x10952C: main (main.c:50)
+==2474831==  Address 0x4a940b0 is 0 bytes inside a block of size 4 free'd
+==2474831==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10A739: freeEvidence (evidence.c:106)
+==2474831==    by 0x10A0A1: freeRoom (room.c:40)
+==2474831==    by 0x10ABE7: freeHouse (house.c:81)
+==2474831==    by 0x109520: main (main.c:49)
+==2474831==  Block was alloc'd at
+==2474831==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10A343: initEvidence (evidence.c:4)
+==2474831==    by 0x10B7E6: leaveEvidence (multithread.c:74)
+==2474831==    by 0x1095AD: runGhostSimulationThread (main.c:62)
+==2474831==    by 0x48FAB42: start_thread (pthread_create.c:442)
+==2474831==    by 0x498BBB3: clone (clone.S:100)
+==2474831== 
+EMF
+==2474831== Invalid free() / delete / delete[] / realloc()
+==2474831==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10A739: freeEvidence (evidence.c:106)
+==2474831==    by 0x109E9C: freeHunterList (hunter.c:90)
+==2474831==    by 0x10952C: main (main.c:50)
+==2474831==  Address 0x4a940b0 is 0 bytes inside a block of size 4 free'd
+==2474831==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10A739: freeEvidence (evidence.c:106)
+==2474831==    by 0x10A0A1: freeRoom (room.c:40)
+==2474831==    by 0x10ABE7: freeHouse (house.c:81)
+==2474831==    by 0x109520: main (main.c:49)
+==2474831==  Block was alloc'd at
+==2474831==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10A343: initEvidence (evidence.c:4)
+==2474831==    by 0x10B7E6: leaveEvidence (multithread.c:74)
+==2474831==    by 0x1095AD: runGhostSimulationThread (main.c:62)
+==2474831==    by 0x48FAB42: start_thread (pthread_create.c:442)
+==2474831==    by 0x498BBB3: clone (clone.S:100)
+==2474831== 
+SOUND
+==2474831== Invalid read of size 8
+==2474831==    at 0x10A778: freeEvidenceList (evidence.c:112)
+==2474831==    by 0x109EAF: freeHunterList (hunter.c:91)
+==2474831==    by 0x10952C: main (main.c:50)
+==2474831==  Address 0x4a91070 is 48 bytes inside a block of size 96 free'd
+==2474831==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10AC03: freeHouse (house.c:83)
+==2474831==    by 0x109520: main (main.c:49)
+==2474831==  Block was alloc'd at
+==2474831==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10AAEB: initHouse (house.c:60)
+==2474831==    by 0x1093E7: main (main.c:16)
+==2474831== 
+==2474831== 
+==2474831== HEAP SUMMARY:
+==2474831==     in use at exit: 4 bytes in 1 blocks
+==2474831==   total heap usage: 196 allocs, 196 frees, 7,660 bytes allocated
+==2474831== 
+==2474831== 4 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==2474831==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2474831==    by 0x10A343: initEvidence (evidence.c:4)
+==2474831==    by 0x10B7E6: leaveEvidence (multithread.c:74)
+==2474831==    by 0x1095AD: runGhostSimulationThread (main.c:62)
+==2474831==    by 0x48FAB42: start_thread (pthread_create.c:442)
+==2474831==    by 0x498BBB3: clone (clone.S:100)
+==2474831== 
+==2474831== LEAK SUMMARY:
+==2474831==    definitely lost: 4 bytes in 1 blocks
+==2474831==    indirectly lost: 0 bytes in 0 blocks
+==2474831==      possibly lost: 0 bytes in 0 blocks
+==2474831==    still reachable: 0 bytes in 0 blocks
+==2474831==         suppressed: 0 bytes in 0 blocks
+==2474831== 
+==2474831== For lists of detected and suppressed errors, rerun with: -s
+==2474831== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)

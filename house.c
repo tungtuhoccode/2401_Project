@@ -6,7 +6,6 @@
         out: house - the house to populate with rooms. Assumes house has been initialized.
 */
 void populateRooms(HouseType* house) {
-    // printf("Start populating room\n");
     // First, create each room
 
     // createRoom assumes that we dynamically allocate a room, initializes the values, and returns a RoomType*
@@ -55,7 +54,6 @@ void populateRooms(HouseType* house) {
     addRoom(&house->rooms, garage);
     addRoom(&house->rooms, utility_room);
 
-    // printf("finish populating room\n");
 }
 
 void initHouse(HouseType **house){
@@ -64,7 +62,6 @@ void initHouse(HouseType **house){
     for(int i=0;i<NUM_HUNTERS;i++){
         newHouse->huntersInHouse[i] = NULL;
     }   
-    //
     initRoomList(&newHouse->rooms);
     initEvidenceList(&newHouse->sharedEvList);
 
@@ -83,6 +80,7 @@ void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource){
 void freeHouse(HouseType *house){
     freeRoom(&house->rooms);
     freeRoomList(&house->rooms);
+    freeEvidenceList(&house->sharedEvList);
     free(house);
 }
 

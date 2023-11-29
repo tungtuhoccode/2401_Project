@@ -12,7 +12,7 @@ void initGhost(GhostType **ghost){
     newGhost->inRoom = NULL;
     newGhost->boredomTimer = 0;
     initGhostEvidenceTypeArray(newGhost);
-
+    initEvidenceList(&newGhost->allEvidenceInHouseList);
     (*ghost) = newGhost;
 }
 

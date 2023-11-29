@@ -1,12 +1,6 @@
 #include "defs.h"
 
 RoomType* createRoom(char* roomNameIn){
-    //    char roomName[MAX_STR]; 
-                //Already initilized
-    //    GhostType *roomGhost;
-    //    RoomListType connectedRooms;
-    //    EvidenceListType roomEvList;
-    //    HunterType* hunters[NUM_HUNTERS];
 
     RoomType *newRoom = (RoomType*) calloc(1, sizeof(RoomType));
     //room name
@@ -43,11 +37,22 @@ void freeRoom(RoomListType *list){
    
     while (currNode != NULL){
         freeRoomList(&currNode->data->connectedRooms);
+        freeEvidenceList(&currNode->data->roomEvList);
+        
+        //finally free the room
         free(currNode->data);
-
         currNode = currNode->next;
     }
 }
+
+//1. free evidence
+//2. free evidence list
+//3. free room
+//4. free room list
+//5. free hunter
+//6. free hunter shared evidence list
+//7. free hunter list
+
 void initRoomList(RoomListType *list){
     list->head = NULL;
     list->tail = NULL;
@@ -93,7 +98,6 @@ void addRoom(RoomListType *list, RoomType *room){
 }
 
 void printHuntersInRoom(RoomType *room){
-    // printf("\nALl hunters in room (%s) are: \n", room->roomName);
     if(room->countHunter == 0){
         printf("None in room (%s)\n", room->roomName);
     }

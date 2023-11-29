@@ -1,5 +1,7 @@
 #include "defs.h"
 
+
+
 int main()
 {
     int i = 0;
@@ -15,14 +17,14 @@ int main()
     populateRooms(house); 
     //printRoomList(&house->rooms);
 
-    HunterType* hunters[NUM_HUNTERS]; 
-    createNewHunters(hunters, &house->sharedEvList);
-    placeHuntersInFirstRoom(house, hunters);
-
     GhostType *ghost;
     initGhost(&ghost);
     placeGhostInRandomRoom(ghost, house, C_TRUE);
     l_ghostInit(ghost->ghostClass, ghost->inRoom->roomName);
+
+    HunterType* hunters[NUM_HUNTERS]; 
+    createNewHunters(hunters, &house->sharedEvList);
+    placeHuntersInFirstRoom(house, hunters);
 
     //Thread creation
     //Simnulation started
@@ -42,9 +44,13 @@ int main()
     printResult(house);
     
     //free
-    freeGhost(ghost);
-    freeHunterList(hunters);
+
     freeHouse(house);
+    freeHunterList(hunters);
+    
+    freeEvidence(&ghost->allEvidenceInHouseList);
+    freeEvidenceList(&ghost->allEvidenceInHouseList);
+    freeGhost(ghost);
 
     return 0;
 }
@@ -100,7 +106,6 @@ void* runHunterSimulationThread(void* arg){
                 break;
             }
         }
-
         usleep(HUNTER_WAIT);
     }
     if(hunter->fear >= FEAR_MAX){
@@ -124,25 +129,28 @@ int getRandomInRange(int max){
 }
 
 void printResult(HouseType* house){
+    printf("=================================\n");
+    printf("All done! Let's see the result...\n");
+    printf("=================================\n");
     int countHunter = 0;
     for(int i = 0; i < NUM_HUNTERS; i++){
         HunterType *hunter = house->huntersInHouse[i];
         if(hunter->fear >= FEAR_MAX || hunter->bore >= BOREDOM_MAX){
             countHunter++;
             if(hunter->fear >= FEAR_MAX){
-                printf("%s is too fear.\n", hunter->hunterName);
+                printf("* %s has run away in fear!\n", hunter->hunterName);
             }
             if(hunter->bore >= BOREDOM_MAX) {
-                printf("%s is too bore.\n", hunter->hunterName);
+                printf("* %s has run away in bore!\n", hunter->hunterName);
             } 
         }
     }
+
+    printf("---------------------------------\n");
     if(countHunter == 4){
-        printf("The ghost has won.\n");
+        printf("The ghost has won the game!\n");
     }
 
-    printf("List of all evidences:\n");
-    printEvidenceList(&house->sharedEvList);
     identifyGhost(house);
 }
 
@@ -158,20 +166,29 @@ void identifyGhost(HouseType* house){
             count ++;
         }
         if(count == 3){
-            printf("Enough evidence to guess the ghost type...\n");
+            printf("It seems that the ghost has been discovered!\n");
+            printf("The hunters have won the game!\n");
             if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0){
-                printf("POLTERGEIST is found.\n");  
+                printf("Using the evidences they found, they correctly determined that the ghost is a POLTERGEIST.\n");  
             } else if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[SOUND] > 0){
-                printf("BANSEE is found.\n");
+                printf("Using the evidences they found, they correctly determined that the ghost is a BANSEE.\n"); 
             } else if(evArr[EMF] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
-                printf("BULLIES is found.\n");
+                printf("Using the evidences they found, they correctly determined that the ghost is a BULLIES.\n"); 
             } else if(evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
-                printf("PHANTOM is found.\n");
+                printf("Using the evidences they found, they correctly determined that the ghost is a PHANTOM.\n"); 
             }
-            printf("\n");
             break;
         }
         currNode = currNode->next;
+    }
+
+    printf("The hunters collected the following evidences:\n");
+    char ev[MAX_STR];
+    for(int i = 0; i < EV_COUNT; i++){
+        if(evArr[i] > 0){
+            evidenceToString(i, ev);
+            printf("* %s\n", ev);
+        }
     }
     sem_post(&house->sharedEvList.evList_mutex);
 }
