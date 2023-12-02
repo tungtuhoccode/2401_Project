@@ -11,8 +11,8 @@
 #define BOREDOM_MAX     100
 #define C_TRUE          1
 #define C_FALSE         0
-#define HUNTER_WAIT     5000
-#define GHOST_WAIT      600
+#define HUNTER_WAIT     2000
+#define GHOST_WAIT      800
 #define NUM_HUNTERS     4
 #define FEAR_MAX        10
 #define NUMB_EV_TYPES   3
@@ -42,28 +42,6 @@ typedef     struct  HunterList HunterListType;
 enum EvidenceType { EMF, TEMPERATURE, FINGERPRINTS, SOUND, EV_COUNT, EV_UNKNOWN };
 enum GhostClass { POLTERGEIST, BANSHEE, BULLIES, PHANTOM, GHOST_COUNT, GH_UNKNOWN };
 enum LoggerDetails { LOG_FEAR, LOG_BORED, LOG_EVIDENCE, LOG_SUFFICIENT, LOG_INSUFFICIENT, LOG_UNKNOWN };
-   /*
-   TODO:
-   1. EvidenceType
-   3. HunterType
-   4. GhostType
-   
-   5. EvidenceNodeType
-   6. EvidenceListType
-
-   7. RoomListType
-   8. RoomNodeType
-
-
-
-   9. RoomType
-
-   10. House
-    
-    11. HunterNode
-    12. HunterListType
-   
-   */
 
 //Evidence
 struct Evidence {
@@ -169,7 +147,6 @@ void l_ghostExit(enum LoggerDetails reason);
 void initEvidence(EvidenceStructType **evStruct, EvidenceType evType);
 void initEvidenceList(EvidenceListType* evList);
 void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence);
-void printEvidenceList(EvidenceListType *list);
 void removeEvidenceFromList(EvidenceListType *list, EvidenceStructType *evidence);
 void freeEvidence(EvidenceListType *list);
 void freeEvidenceList(EvidenceListType *list);
@@ -179,13 +156,8 @@ RoomType* createRoom(char* roomNameIn);
 void initRoomList(RoomListType *list);
 void connectRooms(RoomType* firstRoom, RoomType* secondRoom);
 void addRoom(RoomListType *list, RoomType *room);
-
-void printRoom(RoomType *room);
-void printRoomList(RoomListType *list);
-
 void freeRoom(RoomListType *list);
 void freeRoomList(RoomListType *list);
-
 int checkHunterInRoom(RoomType *room);
 
 //hunter
@@ -193,8 +165,6 @@ void initHuntersArray(HunterType** hunters);
 void createNewHunters(HunterType **hunters, EvidenceListType *evList);
 void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType, EvidenceListType *sharedEvList);
 void freeHunterList(HunterType **hunters);
-void printHuntersInRoom(RoomType *room);
-
 int addHunterToRoom(RoomType *room, HunterType *hunter);
 int removeHunterFromRoom(RoomType *room, HunterType *hunter);
 int checkGhostInRoom(RoomType *room);
@@ -203,11 +173,11 @@ void moveHunter(HunterType* hunter, RoomListType* connectedRooms, int firstMove)
 int reviewEvidence(HunterType* hunter, EvidenceListType* sharedEvList);
 void moveGhostToAdjacentRoom(GhostType *ghost);
 void leaveEvidence(RoomType *room, GhostType *ghost);
+
 //house 
 void populateRooms(HouseType* house);
 void freeHouse(HouseType *house);
 void initHouse(HouseType **house);
-void printHuntersInHouse(HouseType *house);
 void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource);
 void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource);
 void placeGhostInRandomRoom(GhostType *ghost, HouseType *house, int firstMove);
@@ -217,17 +187,9 @@ void placeGhostInRandomRoom(GhostType *ghost, HouseType *house, int firstMove);
 void initGhost(GhostType **ghost);
 void initGhostEvidenceTypeArray(GhostType *ghost);
 void freeGhost(GhostType *ghost);
+void identifyGhost(HouseType* house);
 
 //main function
 void* runGhostSimulationThread(void *arg);
 void* runHunterSimulationThread(void* arg);
 void printResult(HouseType* house);
-void identifyGhost(HouseType* house);
-
-//helper in main
-int getRandomInRange(int max);
-
-
-//tester functions
-void testEvidenceRemoveAndAdd();
-void testMove(HunterType *hunter);

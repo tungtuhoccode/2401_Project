@@ -45,14 +45,6 @@ void freeRoom(RoomListType *list){
     }
 }
 
-//1. free evidence
-//2. free evidence list
-//3. free room
-//4. free room list
-//5. free hunter
-//6. free hunter shared evidence list
-//7. free hunter list
-
 void initRoomList(RoomListType *list){
     list->head = NULL;
     list->tail = NULL;
@@ -63,20 +55,6 @@ void connectRooms(RoomType* firstRoom, RoomType* secondRoom){
     addRoom(&secondRoom->connectedRooms, firstRoom);
 }
 
-void printRoomList(RoomListType *list){
-    RoomNodeType *currNode = list->head;
-    while(currNode != NULL){
-        printRoom(currNode->data);
-        currNode = currNode->next;
-    }
-    printf("\n");
-}
-
-void printRoom(RoomType *room){
-    printf("room name: %s\n", room->roomName);
-}
-
-//free
 void addRoom(RoomListType *list, RoomType *room){
     RoomNodeType *newNode =  (RoomNodeType*) calloc(1, sizeof(RoomNodeType));
     newNode->data = room;
@@ -97,16 +75,42 @@ void addRoom(RoomListType *list, RoomType *room){
     }
 }
 
-void printHuntersInRoom(RoomType *room){
-    if(room->countHunter == 0){
-        printf("None in room (%s)\n", room->roomName);
+int addHunterToRoom(RoomType *room, HunterType *hunter){
+    int curNumbHunter = room->countHunter;
+    if(curNumbHunter == NUM_HUNTERS){
+        printf("Four hunters are in %s, cannot add more.\n",room->roomName);
+        return C_FALSE;
     }
-    else
-    {
-        for(int i = 0;i< room->countHunter;i++){
-            printf("Hunter %d: %s\n",(i+1),room->huntersInRoom[i]->hunterName);
-        }
-    }
-    printf("\n\n");
+    room->huntersInRoom[curNumbHunter] = hunter;
+    room->countHunter++;
+    hunter->currentRoom = room;
+    return C_TRUE;
 }
 
+int removeHunterFromRoom(RoomType *room, HunterType *hunter){
+    int curNumbHunter = room->countHunter;
+
+    //case: there is only 1 element
+    if(curNumbHunter == 1){
+        //if id match 
+        if(strcmp(hunter->hunterName, room->huntersInRoom[0]->hunterName) == 0){
+            room->countHunter--;
+            return C_TRUE;
+        }
+        else{
+            return C_FALSE;
+        }
+    }
+
+    //case: more than 1 element
+    for (int i = 0; i < curNumbHunter; i++){
+        if (strcmp(hunter->hunterName, room->huntersInRoom[i]->hunterName) == 0){
+            for (int j = i; j < curNumbHunter-1;j++){
+                room->huntersInRoom[j] = room->huntersInRoom[j+1];
+            }
+            room->countHunter--;
+            return C_TRUE;
+        }
+    }
+    return C_FALSE;
+}

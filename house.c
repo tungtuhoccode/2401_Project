@@ -83,19 +83,3 @@ void freeHouse(HouseType *house){
     freeEvidenceList(&house->sharedEvList);
     free(house);
 }
-
-
-void printHuntersInHouse(HouseType *house){
-    printf("\nALl hunters in house are: \n");
-    for(int i = 0;i< NUM_HUNTERS;i++){
-        printf("Hunter %d: %s\n",(i+1),house->huntersInHouse[i]->hunterName);
-    }
-    printf("---------------------------\n");
-
-    RoomType *firstRoom = house->rooms.head->data;
-    printf("\nALl hunters in first room (%s) are: \n", firstRoom->roomName);
-    for(int i = 0;i< NUM_HUNTERS;i++){
-        printf("Hunter %d: %s\n",(i+1),firstRoom->huntersInRoom[i]->hunterName);
-    }
-    printf("---------------------------\n");
-}

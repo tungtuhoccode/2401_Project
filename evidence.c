@@ -33,19 +33,6 @@ void addEvidenceToList(EvidenceListType *list, EvidenceStructType *evidence){
     }
 }
 
-void printEvidenceList(EvidenceListType *list){
-    EvidenceNodeType *currNode = list->head;
-    printf("(");
-    while(currNode != NULL){
-        char test[MAX_STR];
-        evidenceToString(currNode->data->evidenceType, test);
-        printf("%s -> ",test);
-        currNode = currNode->next;
-    }
-    printf(")");
-    printf("\n");
-}
-
 void removeEvidenceFromList(EvidenceListType *list, EvidenceStructType *evidence){
     if (list->tail == NULL && list->head == NULL){
         return;

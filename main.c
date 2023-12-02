@@ -8,7 +8,7 @@ int main()
     // Create the house: You may change this, but it's here for demonstration purposes
     // Note: This code will not compile until you have implemented the house functions and structures
 
-    //Initilize
+    //Initilization 
     HouseType *house;
     initHouse(&house);
     populateRooms(house); 
@@ -22,8 +22,8 @@ int main()
     createNewHunters(hunters, &house->sharedEvList);
     placeHuntersInFirstRoom(house, hunters);
 
-    //Thread creation
-    //Simnulation started
+
+    //Threads simulation
     pthread_t ghostThread, hunterThread[NUM_HUNTERS];
 
     pthread_create(&ghostThread, NULL, runGhostSimulationThread, ghost);
@@ -39,8 +39,7 @@ int main()
 
     printResult(house);
     
-    //free
-
+    //free memory
     freeHouse(house);
     freeHunterList(hunters);
 
@@ -105,10 +104,10 @@ void* runHunterSimulationThread(void* arg){
         }
         usleep(HUNTER_WAIT);
     }
-    if(hunter->fear >= FEAR_MAX){
+    if(hunter->fear >= FEAR_MAX && exitReason == -1){
         exitReason = LOG_FEAR;
     }
-    if(hunter->bore >= BOREDOM_MAX){
+    if(hunter->bore >= BOREDOM_MAX && exitReason == -1){
         exitReason = LOG_BORED;
     }
     //remove hunter from room before exit thread
@@ -118,11 +117,6 @@ void* runHunterSimulationThread(void* arg){
     
     l_hunterExit(hunter->hunterName, exitReason);
     return 0;
-}
-
-//get random number in range (0,max-1)
-int getRandomInRange(int max){
-    return rand() % max;
 }
 
 void printResult(HouseType* house){
@@ -146,47 +140,13 @@ void printResult(HouseType* house){
     printf("---------------------------------\n");
     if(countHunter == 4){
         printf("The ghost has won the game!\n");
-    }
-
+    } 
+    
     identifyGhost(house);
+    
+
 }
 
-void identifyGhost(HouseType* house){
-    sem_wait(&house->sharedEvList.evList_mutex);
-    EvidenceNodeType* currNode = house->sharedEvList.head;
-    int evArr[EV_COUNT]= {-1, -1, -1, -1};
-    int count = 0;
 
-    while (currNode != NULL){
-        if(evArr[currNode->data->evidenceType] == -1){
-            evArr[currNode->data->evidenceType] = 1;
-            count ++;
-        }
-        if(count == 3){
-            printf("It seems that the ghost has been discovered!\n");
-            printf("The hunters have won the game!\n");
-            if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0){
-                printf("Using the evidences they found, they correctly determined that the ghost is a POLTERGEIST.\n");  
-            } else if(evArr[EMF] > 0 && evArr[TEMPERATURE] > 0 && evArr[SOUND] > 0){
-                printf("Using the evidences they found, they correctly determined that the ghost is a BANSEE.\n"); 
-            } else if(evArr[EMF] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
-                printf("Using the evidences they found, they correctly determined that the ghost is a BULLIES.\n"); 
-            } else if(evArr[TEMPERATURE] > 0 && evArr[FINGERPRINTS] > 0 && evArr[SOUND] > 0){
-                printf("Using the evidences they found, they correctly determined that the ghost is a PHANTOM.\n"); 
-            }
-            break;
-        }
-        currNode = currNode->next;
-    }
 
-    printf("The hunters collected the following evidences:\n");
-    char ev[MAX_STR];
-    for(int i = 0; i < EV_COUNT; i++){
-        if(evArr[i] > 0){
-            evidenceToString(i, ev);
-            printf("* %s\n", ev);
-        }
-    }
-    sem_post(&house->sharedEvList.evList_mutex);
-}
 

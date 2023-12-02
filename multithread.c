@@ -1,16 +1,5 @@
 #include "defs.h"
 
-int addHunterToRoom(RoomType *room, HunterType *hunter){
-    int curNumbHunter = room->countHunter;
-    if(curNumbHunter == NUM_HUNTERS){
-        printf("Four hunters are in %s, cannot add more\n",room->roomName);
-        return C_FALSE;
-    }
-    room->huntersInRoom[curNumbHunter] = hunter;
-    room->countHunter++;
-    hunter->currentRoom = room;
-    return C_TRUE;
-}
 int checkGhostInRoom(RoomType *room){
     sem_wait(&room->room_mutex);
     
@@ -37,39 +26,13 @@ int checkHunterInRoom(RoomType *room){
     return result;
 }
 
-int removeHunterFromRoom(RoomType *room, HunterType *hunter){
-    int curNumbHunter = room->countHunter;
 
-    //case: there is only 1 element
-    if(curNumbHunter == 1){
-        //if id match 
-        if(strcmp(hunter->hunterName, room->huntersInRoom[0]->hunterName) == 0){
-            room->countHunter--;
-            return C_TRUE;
-        }
-        else{
-            return C_FALSE;
-        }
-    }
-
-    //case: more than 1 element
-    for (int i = 0; i < curNumbHunter; i++){
-        if (strcmp(hunter->hunterName, room->huntersInRoom[i]->hunterName) == 0){
-            for (int j = i; j < curNumbHunter-1;j++){
-                room->huntersInRoom[j] = room->huntersInRoom[j+1];
-            }
-            room->countHunter--;
-            return C_TRUE;
-        }
-    }
-    printf("removed hunter from room: %s", room->roomName);
-    return C_FALSE;
-}
 
 void leaveEvidence(RoomType *room, GhostType *ghost){
     sem_wait(&room->roomEvList.evList_mutex);
     EvidenceStructType *newEv;
-    int randomEvidenceIndex = getRandomInRange(3);
+    int randomEvidenceIndex = randInt(0, 3);
+
     initEvidence(&newEv, ghost->ghostEvidenceTypes[randomEvidenceIndex]);
     addEvidenceToList(&ghost->allEvidenceInHouseList, newEv);
 
@@ -99,6 +62,7 @@ void collectEvidence(HunterType* hunter, EvidenceListType* evidencesInRoom){
     sem_post(&hunter->sharedEvList->evList_mutex);
     sem_post(&evidencesInRoom->evList_mutex);
 }
+
 void moveGhostToAdjacentRoom(GhostType* ghost){ 
     while(C_TRUE){
         int ghostAdded = C_FALSE;
@@ -203,9 +167,6 @@ int reviewEvidence(HunterType* hunter, EvidenceListType* sharedEvList){
             count ++;
         }
         if(count == 3){
-            printf("Enough evidence to guess the ghost type\n");
-            printEvidenceList(sharedEvList);
-            printf("\n");
             logType = LOG_SUFFICIENT;
             break;
         }

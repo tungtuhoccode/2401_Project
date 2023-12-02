@@ -4,20 +4,6 @@ void createNewHunters(HunterType **hunters, EvidenceListType *evList){
     int equipments[NUM_HUNTERS] = {EMF, TEMPERATURE, FINGERPRINTS, SOUND};
    
     for(int i = 0; i < NUM_HUNTERS; i++){
-         //COMMENT OUT THESE LATER WHEN USING USER INPUT!!!!
-            // char hunterNames[NUM_HUNTERS][MAX_STR] = {
-            // "Tung Tran",
-            // "Khoi Le",
-            // "Ngan Huynh",
-            // "Hoa Nguyen"
-            // };
-           
-            // char hunter_name[MAX_STR];
-            // strcpy(hunter_name, hunterNames[i]);
-            // int choice = i;
-            //------------------------------------
-
-
         //get user input for hunter name
         printf("\nEnter the name of hunter %d: ", i+1);
         char hunter_name[MAX_STR];
@@ -25,8 +11,7 @@ void createNewHunters(HunterType **hunters, EvidenceListType *evList){
         hunter_name[strlen(hunter_name)-1] = '\0';
         
         //promp user to get hunter type
-        
-        printf("Choose the equipment type for %s. Available devices:\n", hunter_name);
+        printf("Choose an equipment for %s. Available devices:\n", hunter_name);
         int choice = -1;
         while(C_TRUE){
             printf("|");
@@ -53,12 +38,7 @@ void createNewHunters(HunterType **hunters, EvidenceListType *evList){
             }
         }
 
-
-
-        //allocate dynamic memory for hunter    
         HunterType *newHunter = (HunterType*)calloc(1,sizeof(HunterType));
-
-        //initialize hunter with the hunter name and a default equipment type
         initHunter(newHunter, hunter_name, equipments[choice], evList);
 
         //set the hunter into the array
@@ -71,7 +51,6 @@ void createNewHunters(HunterType **hunters, EvidenceListType *evList){
     }
 }
 
-
 void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource){
     for(int i = 0;i< NUM_HUNTERS;i++){
         houseDestination->huntersInHouse[i] = huntersSource[i];
@@ -80,7 +59,6 @@ void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSo
         firstRoom->countHunter++;
         huntersSource[i]->currentRoom = firstRoom;
     }
-
 }
 
 void freeHunterList(HunterType **hunters){
