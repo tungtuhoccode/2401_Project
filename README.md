@@ -10,14 +10,14 @@ The program will have the hunters with different devices to hunt the ghost in a 
 # List of files:
 - defs.h: Contains all definations and declarations
 - main.c: Contains main code to execute
-- hunter.c: Contains all code related to hunters
+- house.c: Contains all code related to house
 - room.c: Contains all code related to room
 - evidence.c: Contains all code related to evidences
-- house.c: Contains all code related to house
-- logger.c: Contains all code to log
-- utils.c: Contains all code of other helper functions
+- hunter.c: Contains all code related to hunters
 - ghost.c: Contains all code related to ghosts
 - multithread.c: Contains all code related to multithreads
+- logger.c: Contains all code to log
+- utils.c: Contains all code of other helper functions
 - Makefile: Uses to build the project using `make`
 - README.md: Contains this description
 - Github_repo_history.png: For bonus git and github using
@@ -36,4 +36,3 @@ Use the command `make run` while in the directory containing the executable file
 # Bonus:
 - Use Git and GitHub (using private repositories only) to version control the code. 
 - Allow the user to specify both name and device of hunters at the beginning.
-

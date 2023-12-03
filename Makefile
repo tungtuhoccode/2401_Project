@@ -24,7 +24,9 @@ utils.o: utils.c
 final: ${OBJS}
 			gcc -o project ${OBJS}
 run: 
-			./${EXCUTABLE}
+			./${EXCUTABLE} 
+runWithInput: 
+			./${EXCUTABLE} 
 leakcheck:
 			valgrind --leak-check=full ./project
 clean:

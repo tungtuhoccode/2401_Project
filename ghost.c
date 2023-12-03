@@ -72,8 +72,7 @@ void placeGhostInRandomRoom(GhostType *ghost, HouseType *house, int firstMove){
     }
 }
 
-
-void identifyGhost(HouseType* house){
+void identifyGhost(HouseType* house, int ghostWinFlag){
     EvidenceNodeType* currNode = house->sharedEvList.head;
     int evArr[EV_COUNT]= {-1, -1, -1, -1};
     int count = 0;
@@ -83,7 +82,7 @@ void identifyGhost(HouseType* house){
             evArr[currNode->data->evidenceType] = 1;
             count ++;
         }
-        if(count == 3){
+        if(count == 3 && ghostWinFlag == C_FALSE){
             printf("It seems that the ghost has been discovered!\n");
             printf("The hunters have won the game!\n");
             char ghost[MAX_STR];

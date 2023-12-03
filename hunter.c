@@ -51,6 +51,20 @@ void createNewHunters(HunterType **hunters, EvidenceListType *evList){
     }
 }
 
+void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType, EvidenceListType *sharedEvList){
+    strcpy(hunter->hunterName, hunterNameIn);
+    hunter->hunterEquipmentType = hunterEquipmentType;
+    hunter->sharedEvList = sharedEvList;
+    hunter->fear = 0;
+    hunter->bore = 0;
+}
+
+void initHuntersArray(HunterType** hunters){
+    for(int i = 0;i<NUM_HUNTERS;i++){
+        hunters[i] = NULL;
+    }
+}
+
 void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSource){
     for(int i = 0;i< NUM_HUNTERS;i++){
         houseDestination->huntersInHouse[i] = huntersSource[i];
@@ -64,21 +78,6 @@ void placeHuntersInFirstRoom(HouseType* houseDestination, HunterType **huntersSo
 void freeHunterList(HunterType **hunters){
     for(int i = 0; i < NUM_HUNTERS;i++){
         free(hunters[i]);
-    }
-}
-
-
-void initHunter(HunterType *hunter, char* hunterNameIn, EvidenceType hunterEquipmentType, EvidenceListType *sharedEvList){
-    strcpy(hunter->hunterName, hunterNameIn);
-    hunter->hunterEquipmentType = hunterEquipmentType;
-    hunter->sharedEvList = sharedEvList;
-    hunter->fear = 0;
-    hunter->bore = 0;
-}
-
-void initHuntersArray(HunterType** hunters){
-    for(int i = 0;i<NUM_HUNTERS;i++){
-        hunters[i] = NULL;
     }
 }
 

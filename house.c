@@ -53,7 +53,6 @@ void populateRooms(HouseType* house) {
     addRoom(&house->rooms, living_room);
     addRoom(&house->rooms, garage);
     addRoom(&house->rooms, utility_room);
-
 }
 
 void initHouse(HouseType **house){
@@ -67,14 +66,6 @@ void initHouse(HouseType **house){
 
     //deference param house and set it to the new house
     (*house) = newHouse;
-}
-
-void addHuntersToHouse(HouseType* houseDestination, HunterType **huntersSource){
-    for(int i = 0;i< NUM_HUNTERS;i++){
-        houseDestination->huntersInHouse[i] = huntersSource[i];
-        RoomType *firstRoom = houseDestination->rooms.head->data;
-        firstRoom->huntersInRoom[i] = huntersSource[i];
-    }
 }
 
 void freeHouse(HouseType *house){

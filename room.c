@@ -21,30 +21,6 @@ RoomType* createRoom(char* roomNameIn){
     return newRoom;
 }
 
-void freeRoomList(RoomListType *list){
-    RoomNodeType *currNode = list->head;
-    RoomNodeType *prevNode = NULL;
-   
-    while (currNode != NULL){
-        prevNode = currNode; 
-        currNode = currNode->next;
-        free(prevNode);
-    }
-}
-
-void freeRoom(RoomListType *list){
-    RoomNodeType *currNode = list->head;
-   
-    while (currNode != NULL){
-        freeRoomList(&currNode->data->connectedRooms);
-        freeEvidenceList(&currNode->data->roomEvList);
-        
-        //finally free the room
-        free(currNode->data);
-        currNode = currNode->next;
-    }
-}
-
 void initRoomList(RoomListType *list){
     list->head = NULL;
     list->tail = NULL;
@@ -113,4 +89,28 @@ int removeHunterFromRoom(RoomType *room, HunterType *hunter){
         }
     }
     return C_FALSE;
+}
+
+void freeRoom(RoomListType *list){
+    RoomNodeType *currNode = list->head;
+   
+    while (currNode != NULL){
+        freeRoomList(&currNode->data->connectedRooms);
+        freeEvidenceList(&currNode->data->roomEvList);
+        
+        //finally free the room
+        free(currNode->data);
+        currNode = currNode->next;
+    }
+}
+
+void freeRoomList(RoomListType *list){
+    RoomNodeType *currNode = list->head;
+    RoomNodeType *prevNode = NULL;
+   
+    while (currNode != NULL){
+        prevNode = currNode; 
+        currNode = currNode->next;
+        free(prevNode);
+    }
 }

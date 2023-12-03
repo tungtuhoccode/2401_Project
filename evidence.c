@@ -6,6 +6,7 @@ void initEvidence(EvidenceStructType **evStruct, EvidenceType evType){
 
     (*evStruct) = newNode;
 }
+
 void initEvidenceList(EvidenceListType* evList){
     evList->head = NULL;
     evList->tail = NULL;

@@ -124,6 +124,7 @@ void printResult(HouseType* house){
     printf("All done! Let's see the result...\n");
     printf("=================================\n");
     int countHunter = 0;
+    int ghostWinFlag = C_FALSE;
     for(int i = 0; i < NUM_HUNTERS; i++){
         HunterType *hunter = house->huntersInHouse[i];
         if(hunter->fear >= FEAR_MAX || hunter->bore >= BOREDOM_MAX){
@@ -139,12 +140,11 @@ void printResult(HouseType* house){
 
     printf("---------------------------------\n");
     if(countHunter == 4){
+        ghostWinFlag = C_TRUE;
         printf("The ghost has won the game!\n");
     } 
     
-    identifyGhost(house);
-    
-
+    identifyGhost(house, ghostWinFlag);
 }
 
 

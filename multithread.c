@@ -13,21 +13,6 @@ int checkGhostInRoom(RoomType *room){
     return result;
 }
 
-int checkHunterInRoom(RoomType *room){
-    sem_wait(&room->room_mutex);
-
-    int result = -1;
-    if(room->countHunter > 0){
-        result = C_TRUE;
-    }else{
-        result = C_FALSE;
-    }
-    sem_post(&room->room_mutex);
-    return result;
-}
-
-
-
 void leaveEvidence(RoomType *room, GhostType *ghost){
     sem_wait(&room->roomEvList.evList_mutex);
     EvidenceStructType *newEv;
@@ -39,28 +24,6 @@ void leaveEvidence(RoomType *room, GhostType *ghost){
     addEvidenceToList(&room->roomEvList, newEv);
     l_ghostEvidence( ghost->ghostEvidenceTypes[randomEvidenceIndex], room->roomName);
     sem_post(&room->roomEvList.evList_mutex);
-}
-
-
-void collectEvidence(HunterType* hunter, EvidenceListType* evidencesInRoom){
-
-    sem_wait(&hunter->sharedEvList->evList_mutex);
-    sem_wait(&evidencesInRoom->evList_mutex);
-    EvidenceNodeType* currNode = evidencesInRoom->head;
-
-    while(currNode != NULL){
-        if(currNode->data->evidenceType == hunter->hunterEquipmentType){
-            l_hunterCollect(hunter->hunterName, currNode->data->evidenceType, hunter->currentRoom->roomName);
-            addEvidenceToList(hunter->sharedEvList, currNode->data);
-            removeEvidenceFromList(evidencesInRoom, currNode->data);  
-
-            break;
-        }
-        currNode = currNode->next;
-    }
-
-    sem_post(&hunter->sharedEvList->evList_mutex);
-    sem_post(&evidencesInRoom->evList_mutex);
 }
 
 void moveGhostToAdjacentRoom(GhostType* ghost){ 
@@ -98,6 +61,62 @@ void moveGhostToAdjacentRoom(GhostType* ghost){
         //if hunter is succesfully added
         if(ghostAdded) break;
     }
+}
+
+int checkHunterInRoom(RoomType *room){
+    sem_wait(&room->room_mutex);
+
+    int result = -1;
+    if(room->countHunter > 0){
+        result = C_TRUE;
+    }else{
+        result = C_FALSE;
+    }
+    sem_post(&room->room_mutex);
+    return result;
+}
+
+void collectEvidence(HunterType* hunter, EvidenceListType* evidencesInRoom){
+
+    sem_wait(&hunter->sharedEvList->evList_mutex);
+    sem_wait(&evidencesInRoom->evList_mutex);
+    EvidenceNodeType* currNode = evidencesInRoom->head;
+
+    while(currNode != NULL){
+        if(currNode->data->evidenceType == hunter->hunterEquipmentType){
+            l_hunterCollect(hunter->hunterName, currNode->data->evidenceType, hunter->currentRoom->roomName);
+            addEvidenceToList(hunter->sharedEvList, currNode->data);
+            removeEvidenceFromList(evidencesInRoom, currNode->data);  
+
+            break;
+        }
+        currNode = currNode->next;
+    }
+
+    sem_post(&hunter->sharedEvList->evList_mutex);
+    sem_post(&evidencesInRoom->evList_mutex);
+}
+
+int reviewEvidence(HunterType* hunter, EvidenceListType* sharedEvList){
+    sem_wait(&hunter->sharedEvList->evList_mutex);
+    EvidenceNodeType* currNode = sharedEvList->head;
+    int evArr[EV_COUNT]= {-1, -1, -1, -1};
+    int count = 0;
+    int logType = LOG_INSUFFICIENT;
+    while (currNode != NULL){
+        if(evArr[currNode->data->evidenceType] == -1){
+            evArr[currNode->data->evidenceType] = 1;
+            count ++;
+        }
+        if(count == 3){
+            logType = LOG_SUFFICIENT;
+            break;
+        }
+        currNode = currNode->next;
+    }
+    l_hunterReview(hunter->hunterName, logType);
+    sem_post(&hunter->sharedEvList->evList_mutex);
+    return count;
 }
 
 void moveHunter(HunterType* hunter, RoomListType* connectedRooms, int firstMove){
@@ -153,26 +172,4 @@ void moveHunter(HunterType* hunter, RoomListType* connectedRooms, int firstMove)
         //if hunter is succesfully added
         if(hunterAdded) break;
     }
-}
-
-int reviewEvidence(HunterType* hunter, EvidenceListType* sharedEvList){
-    sem_wait(&hunter->sharedEvList->evList_mutex);
-    EvidenceNodeType* currNode = sharedEvList->head;
-    int evArr[EV_COUNT]= {-1, -1, -1, -1};
-    int count = 0;
-    int logType = LOG_INSUFFICIENT;
-    while (currNode != NULL){
-        if(evArr[currNode->data->evidenceType] == -1){
-            evArr[currNode->data->evidenceType] = 1;
-            count ++;
-        }
-        if(count == 3){
-            logType = LOG_SUFFICIENT;
-            break;
-        }
-        currNode = currNode->next;
-    }
-    l_hunterReview(hunter->hunterName, logType);
-    sem_post(&hunter->sharedEvList->evList_mutex);
-    return count;
 }
