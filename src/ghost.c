@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "../include/defs.h"
 
 
 void initGhost(GhostType **ghost){

@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "../include/defs.h"
 
 int checkGhostInRoom(RoomType *room){
     sem_wait(&room->room_mutex);

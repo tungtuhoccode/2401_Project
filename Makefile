@@ -1,33 +1,63 @@
+# Directories
+Build_Dir = ./build
+Source_Dir = ./src
+Bin_Dir = ./bin
 
+# Targets and dependencies
 TARGETS = final
-OBJS = main.o hunter.o ghost.o evidence.o room.o house.o multithread.o logger.o utils.o
-EXCUTABLE = project
-all:		${TARGETS}
-main.o: main.c
-			gcc -Wall -Wextra -g -c main.c
-hunter.o: hunter.c
-			gcc -Wall -Wextra -g -c hunter.c
-ghost.o: ghost.c
-			gcc -Wall -Wextra -g -c ghost.c
-evidence.o: evidence.c
-			gcc -Wall -Wextra -g -c evidence.c
-room.o: room.c
-			gcc -Wall -Wextra -g -c room.c
-house.o: house.c
-			gcc -Wall -Wextra -g -c house.c
-multithread.o: multithread.c
-			gcc -Wall -Wextra -g -c multithread.c
-logger.o: logger.c
-			gcc -Wall -Wextra -g -c logger.c
-utils.o: utils.c
-			gcc -Wall -Wextra -g -c utils.c
+OBJS = ${Build_Dir}/main.o ${Build_Dir}/hunter.o ${Build_Dir}/ghost.o ${Build_Dir}/evidence.o ${Build_Dir}/room.o ${Build_Dir}/house.o ${Build_Dir}/multithread.o ${Build_Dir}/logger.o ${Build_Dir}/utils.o
+EXCUTABLE = ${Bin_Dir}/simulation
+
+# Compiler and flags  
+CC = gcc
+CFLAGS = -Wall -Wextra -g
+
+# Build rules
+all: ${TARGETS}
+
+${Build_Dir}/main.o: ${Source_Dir}/main.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/hunter.o: ${Source_Dir}/hunter.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/ghost.o: ${Source_Dir}/ghost.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/evidence.o: ${Source_Dir}/evidence.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/room.o: ${Source_Dir}/room.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/house.o: ${Source_Dir}/house.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/multithread.o: ${Source_Dir}/multithread.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/logger.o: ${Source_Dir}/logger.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+${Build_Dir}/utils.o: ${Source_Dir}/utils.c
+	${CC} ${CFLAGS} -c $< -o $@
+
 final: ${OBJS}
-			gcc -o project ${OBJS}
-run: 
-			./${EXCUTABLE} 
-runWithInput: 
-			./${EXCUTABLE} 
-leakcheck:
-			valgrind --leak-check=full ./project
+	${CC} -o ${EXCUTABLE} ${OBJS}
+
+# Run the executable
+run: ${EXCUTABLE}
+	${EXCUTABLE}
+
+# Memory leak check
+leakcheck: ${EXCUTABLE}
+	valgrind --leak-check=full ./${EXCUTABLE}
+
+# Clean up object files and executable
 clean:
-			rm -f ${OBJS} ${EXCUTABLE}
+	rm -f ${OBJS} ${EXCUTABLE}
+
+# Create necessary directories
+directories:
+	mkdir -p ${Build_Dir} ${Bin_Dir}
+

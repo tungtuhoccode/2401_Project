@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "../include/defs.h"
 
 void initEvidence(EvidenceStructType **evStruct, EvidenceType evType){
     EvidenceStructType *newNode =  (EvidenceStructType*) calloc(1, sizeof(EvidenceStructType));

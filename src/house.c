@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "../include/defs.h"
 
 /*
     Dynamically allocates several rooms and populates the provided house.

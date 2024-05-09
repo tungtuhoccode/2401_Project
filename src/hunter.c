@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "../include/defs.h"
 
 void createNewHunters(HunterType **hunters, EvidenceListType *evList){
     int equipments[NUM_HUNTERS] = {EMF, TEMPERATURE, FINGERPRINTS, SOUND};

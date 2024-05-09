@@ -1,4 +1,4 @@
-# COMP 2401 Final Project
+# System Programming Course Final Project
 
 # Group Members: 
 - Nancy Huynh (SN: 101263408) 
